@@ -3,6 +3,11 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" mf = Make file:
+cmap \mf   cd libdss<CR>:make <C-R>=expand("%:r")<CR>_dll.o<CR>:cd -<CR>
+
+set makeprg=dmake
+
 " Simpler input for accolades on a German keyboard
 imap ö {
 imap ä }
@@ -23,3 +28,6 @@ imap <C-K>	<Plug>MarkersJumpB
 map <C-K>	<Plug>MarkersJumpB
 imap <C-<>	<Plug>MarkersMark
 vmap <C-<>	<Plug>MarkersMark
+
+" Replace function declaration with implementation
+" :.,$s/\([^ ]*::[^)]*)\)\( .*;\)/\1\2{  ENTER("\1");}
