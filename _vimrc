@@ -11,6 +11,10 @@ set textwidth=75
 set statusline=%f%m%=%l
 runtime ftplugin/man.vim
 
+" Vim Plugin taglist.vim (http://www.vim.org/scripts/script.php?script_id=273)
+let Tlist_Ctags_Cmd="/export/home/anwa/local/sparc-sun-solaris2.8/bin/ctags"
+nnoremap <silent> <F8> :Tlist<CR>
+
 " The CTRL-] does not work for some reason or another, but I still want
 " to jump to topics using the keyboard:
 " map <M-9> <C-]>
