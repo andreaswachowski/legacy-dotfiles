@@ -164,12 +164,12 @@ command! -buffer -nargs=0 PASTEIMPL call <SID>InsertCodeAtLine()
 nnoremap <buffer> <Plug>GotoImpl	:GOTOIMPL<SPACE>
 nnoremap <buffer> <Plug>PasteImpl	:PASTEIMPL<CR>
 if !hasmapto('<Plug>GotoImpl', 'n')
-  nmap <buffer> ;GI <Plug>GotoImpl
+  nmap <buffer> <Leader>GI <Plug>GotoImpl
   " <LeftMouse> is used to position the cursor first
   nmap <buffer> <M-LeftMouse>  <LeftMouse><Plug>GotoImpl<CR>
 endif
 if !hasmapto('<Plug>PasteImpl', 'n')
-  nmap <buffer> ;PI <Plug>PasteImpl
+  nmap <buffer> <Leader>PI <Plug>PasteImpl
   nmap <buffer> <M-RightMouse> <LeftMouse><Plug>PasteImpl
 endif
 " insert mode mapping ; use global parameters

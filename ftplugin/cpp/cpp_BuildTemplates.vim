@@ -25,56 +25,56 @@ let b:loaded_cpp_BuildTemplates_local_settings = 1
 " Commands {{{
 " ------------------------------------------------------------------------
 " Command:	:HEADER
-" Map shortcut:	;HE
+" Map shortcut:	<Leader>HE
 " Purpose:	Insert the template for a header file (.h) plus a class
 " Parameter: 	<1> == Name of the main class of the file
 " Note:		Use the same function than :CLASS for inserting the class
 " 		template.
   command! -buffer -nargs=1 HEADER :call <sid>Cpp_newHeaderFile(<q-args>)
-  nnoremap <buffer> ;HE :HEADER<space>
+  nnoremap <buffer> <Leader>HE :HEADER<space>
 "
 " Command:	:CLASS
-" Map shortcut:	;CL
+" Map shortcut:	<Leader>CL
 " Purpose:	Insert the template for a class
 " Parameter: 	<1> == Name of the class
   command! -buffer -nargs=1 CLASS :call <sid>Cpp_newClass(<q-args>)
-  nnoremap <buffer> ;CL :CLASS<space>
+  nnoremap <buffer> <Leader>CL :CLASS<space>
 "
 " Command:	:BLINE
-" Map shortcut:	;BL
+" Map shortcut:	<Leader>BL
 " Purpose:	Insert a 3 lines separator
 " Parameter:	<1> == Title of the separation
   command! -buffer -nargs=1 BLINE :call <sid>Cpp_bigLine(<q-args>)
-  nnoremap <buffer> ;BL :BLINE<space>
+  nnoremap <buffer> <Leader>BL :BLINE<space>
 "
 " Command:	:MGROUP
-" Map shortcut:	;MGR
+" Map shortcut:	<Leader>MGR
 " Purpose:	Insert a group plus a separator line
 " Parameter:	<1> == Name of the group
   command! -buffer -nargs=1 MGROUP :call <sid>Cpp_megagroup(<q-args>)
-  nnoremap <buffer> ;MGR :MGROUP<space>
+  nnoremap <buffer> <Leader>MGR :MGROUP<space>
 "
 " Command:	:GROUP
-" Map shortcut:	;GR
+" Map shortcut:	<Leader>GR
 " Purpose:	Insert a group
 " Parameter:	<1> == Name of the group
   command! -buffer -nargs=1 GROUP :call <sid>Cpp_group(<q-args>)
-  nnoremap <buffer> ;GR :GROUP<space>
+  nnoremap <buffer> <Leader>GR :GROUP<space>
 "
 " Command:	:ADDATTRIBUTE
-" Map shortcut:	;AA
+" Map shortcut:	<Leader>AA
 " Purpose:	Insert an attribute plus its accessors to the current class
   command! -buffer -nargs=0 ADDATTRIBUTE :call Cpp_AddAttribute()
-  nnoremap <buffer> ;AA :ADDATTRIBUTE<cr>
+  nnoremap <buffer> <Leader>AA :ADDATTRIBUTE<cr>
 "
 " Command:	:REACHINLINE
-" Map shortcut:	;RI
+" Map shortcut:	<Leader>RI
 " Purpose:	Reach the location of inlines for the specified class
   command! -buffer -nargs=1 REACHINLINE :call Cpp_ReachInlinePart(<q-args>)
-  nnoremap <buffer> ;RI :REACHINLINE<space>
+  nnoremap <buffer> <Leader>RI :REACHINLINE<space>
 " }}}
 " ==========================================================================
-" ;GR <foo>  inserts /**@name <foo>
+" <Leader>GR <foo>  inserts /**@name <foo>
 "                     */
 "                    //@{
 "                    //@}

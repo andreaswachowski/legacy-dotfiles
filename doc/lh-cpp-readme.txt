@@ -157,13 +157,13 @@ Features~
 			    *:HEADER* *:CLASS* *:BLINES* *:GROUP* *:MGROUP*
 			    *:ADDATTRIBUTE* *:REACHINLINE*
     Commands:		Mappings to them:
-	:HEADER	{name}	    ;HE		Header file template
-	:CLASS	{name}	    ;CL		Class declaration template
-	:BLINES	{name}	    ;BL		Inserts rulers
-	:GROUP	{name}	    ;GR		Inserts a Doc++ group
-	:MGROUP	{name}	    ;MGR	Inserts a Doc++ group + a ruler
-	:ADDATTRIBUTE	    ;AA		(do it, cursor on the "private" line)
-	:REACHINLINE {name} ;RI		Reaches the place where inlines are
+	:HEADER	{name}	    <Leader>HE		Header file template
+	:CLASS	{name}	    <Leader>CL		Class declaration template
+	:BLINES	{name}	    <Leader>BL		Inserts rulers
+	:GROUP	{name}	    <Leader>GR		Inserts a Doc++ group
+	:MGROUP	{name}	    <Leader>MGR	Inserts a Doc++ group + a ruler
+	:ADDATTRIBUTE	    <Leader>AA		(do it, cursor on the "private" line)
+	:REACHINLINE {name} <Leader>RI		Reaches the place where inlines are
 					defined
     Options:
 	*g:setPrefix* *g:getPrefix* *g:refPrefix* accessors names
@@ -208,14 +208,14 @@ Features~
 		features.
 
     Commands:		    Mappings to them:
-	:GOTOIMPL {options}	;GI				*:GOTOIMPL*
+	:GOTOIMPL {options}	<Leader>GI				*:GOTOIMPL*
 			    <C-X>GI	[Insert mode default mapping]
 			    <M-LeftMouse>
 	    Go to the implementation of the current function, if the
 	    implementation does not exist yet, a default one will be provided.
 	    To change the keybindings:	<Plug>GotoImpl
 
-	:PASTEIMPL 		;PI				*:PASTEIMPL*
+	:PASTEIMPL 		<Leader>PI				*:PASTEIMPL*
 			    <C-X>PI	[Insert mode default mapping]
 			    <M-RightMouse>
 	    Insert the function-implementation on the next line
