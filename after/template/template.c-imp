@@ -3,7 +3,7 @@ VimL: let s:value_start = '¡'
 VimL: let s:value_end   = '¡'
 //========================================================================
 /**@file	¡expand("%:t")¡
- * @author	¡substitute(g:author,'\r"','\r *','g')¡
+ * @author	¡substitute(Author(),'\r"','\r *','g')¡
  * @version	¡Marker_Txt("version")¡
  * @date
  * 	Created:	¡DateStamp()¡ \n
