@@ -5,6 +5,7 @@ set autoindent
 set incsearch
 set sidescroll=1
 set exrc
+set winminheight=0
 set textwidth=75
 "set laststatus=2
 set statusline=%f%m%=%l
@@ -22,6 +23,7 @@ if &t_Co > 2 || has("gui_running")
     set columns=80
   endif
   highlight Statement ctermfg=1
+  set guifont=CMTT8:h12:cSYMBOL
 endif
 
 " FILETYPE-SPECIFIC SETTINGS
