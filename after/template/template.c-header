@@ -10,7 +10,7 @@ VimL: let s:value_end   = '¡'
  *
  * @author  ¡substitute(Author(),'\r"','\r *','g')¡ (original author)
  * @author  $Author$ (last modifier)
- * $Release: $
+ * $Revision$
  * $Date$
  * @ingroup ¡Marker_Txt("package name")¡
  *
