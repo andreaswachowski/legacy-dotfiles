@@ -1,0 +1,4 @@
+Menu CustomMenu
+{
+"XTerm"	f.exec "xterm '-stsc-aplplus terminal-*-*-normal--*-*-*-*-*-*-*-*'"
+}

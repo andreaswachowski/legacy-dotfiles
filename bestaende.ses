@@ -1,0 +1,485 @@
+set nocompatible
+let s:cpo_save=&cpo
+set cpo&vim
+map! <xHome> <Home>
+map! <xEnd> <End>
+map! <S-xF4> <S-F4>
+map! <S-xF3> <S-F3>
+map! <S-xF2> <S-F2>
+map! <S-xF1> <S-F1>
+map! <xF4> <F4>
+map! <xF3> <F3>
+map! <xF2> <F2>
+map! <xF1> <F1>
+imap ä }
+imap ö {
+map <xHome> <Home>
+map <xEnd> <End>
+map <S-xF4> <S-F4>
+map <S-xF3> <S-F3>
+map <S-xF2> <S-F2>
+map <S-xF1> <S-F1>
+map <xF4> <F4>
+map <xF3> <F3>
+map <xF2> <F2>
+map <xF1> <F1>
+map ¹ 
+imap __exc try {} catch ( RpmsMsgException e ) {System.out.println( "Exception: " + e );e.printStackTrace();}4ko
+imap __tstm public void test() {}kf(i
+imap __pr System.out.println();hi
+let &cpo=s:cpo_save
+unlet s:cpo_save
+set autoindent
+set exrc
+set incsearch
+set mouse=a
+set shiftwidth=4
+set showmatch
+set suffixes=.bak,~,.o,.h,.info,.swp,.obj,.class
+if &syntax != 'java'
+set syntax=java
+endif
+set tabstop=4
+set textwidth=75
+set visualbell
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/rpmssvr.prod/src/lib/libdss
+set shortmess=aoO
+badd +237 libfnc/PortfolioAnalyzerDelegate.h
+badd +59 libfnc/PortfolioAnalyzer.cpp
+badd +71 test/testclient/PortfolioAnalyzerTest.java
+badd +12 psidl/PortfolioAnalyzer.psidl
+badd +63 lmobj/AssetAnalyzer.h
+badd +167 libfnc/AssetAnalyzer.cpp
+badd +484 test/testclient/AssetAnalyzerTest.java
+badd +591 libfnc/PortfolioAnalyzerDelegate.cpp
+badd +26 /u05/projects/rpmssvr/src/lib/liblm/DynLmObject.h
+badd +356 /u05/projects/rpmssvr/src/lib/liblm/LmObject.h
+badd +1 /u05/projects/rpmssvr/src/lib/liblm/SuObject.h
+badd +118 ~/rpmssvr.prod/src/lib/libdss_java/com/reuters/rpms/ros/dsscli/PortfolioAnalyzer.java
+badd +55 /u05/projects/rpmssvr/src/lib/libbl/lmobj/Security.h
+badd +1 ../u05/projects/rpmssvr/src/lib/libbl/lmobj/Security.h
+badd +52 psidl/HoldingObjects.psidl
+badd +16 libfnc/selects.txt
+badd +351 libfnc/DSSLib.cpp
+badd +275 libfnc/DSSLib.h
+badd +142 libfnc/DealInfoImpl.h
+badd +316 ~/doc/notes/activitylog.txt
+badd +1 /u05/projects/rpmssvr/src/lib/libbl/lmobj/SecUnderlying.h
+silent! argdel *
+set splitbelow splitright
+normal _|
+split
+normal _|
+split
+normal _|
+split
+normal 3k
+normal w
+normal w
+normal w
+set nosplitbelow
+set nosplitright
+normal t
+set winheight=1 winwidth=1
+exe 'resize ' . ((&lines * 1 + 23) / 47)
+normal w
+exe 'resize ' . ((&lines * 1 + 23) / 47)
+normal w
+exe 'resize ' . ((&lines * 39 + 23) / 47)
+normal w
+exe 'resize ' . ((&lines * 1 + 23) / 47)
+normal w
+argglobal
+edit psidl/PortfolioAnalyzer.psidl
+setlocal autoindent
+setlocal autoread
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != ''
+setlocal filetype=
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatoptions=tcq
+setlocal grepprg=
+setlocal iminsert=2
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal path=
+setlocal nopreviewwindow
+setlocal noreadonly
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal suffixesadd=
+setlocal swapfile
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=4
+setlocal tags=
+setlocal textwidth=75
+setlocal thesaurus=
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal zE
+let s:l = 10 - ((0 * winheight(0) + 0) / 1)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal zt
+10
+normal 068l
+normal w
+argglobal
+edit test/testclient/PortfolioAnalyzerTest.java
+setlocal autoindent
+setlocal autoread
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=j1
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != 'java'
+setlocal filetype=java
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatoptions=croql
+setlocal grepprg=
+setlocal iminsert=2
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=GetJavaIndent()
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e,0=extends,0=implements
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal path=
+setlocal nopreviewwindow
+setlocal noreadonly
+setlocal noscrollbind
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal suffixesadd=.java
+setlocal swapfile
+if &syntax != 'java'
+setlocal syntax=java
+endif
+setlocal tabstop=4
+setlocal tags=
+setlocal textwidth=75
+setlocal thesaurus=
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal zE
+129,149fold
+129
+normal zo
+let s:l = 149 - ((0 * winheight(0) + 0) / 1)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal zt
+149
+normal 01l
+normal w
+argglobal
+edit libfnc/PortfolioAnalyzer.cpp
+setlocal autoindent
+setlocal autoread
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != 'cpp'
+setlocal filetype=cpp
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatoptions=croql
+setlocal grepprg=
+setlocal iminsert=2
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal path=
+setlocal nopreviewwindow
+setlocal noreadonly
+setlocal noscrollbind
+setlocal shiftwidth=3
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal suffixesadd=
+setlocal swapfile
+if &syntax != 'cpp'
+setlocal syntax=cpp
+endif
+setlocal tabstop=3
+setlocal tags=
+setlocal textwidth=75
+setlocal thesaurus=
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal zE
+35,57fold
+60,78fold
+87,104fold
+110,121fold
+128,143fold
+150,160fold
+167,178fold
+188,204fold
+214,256fold
+188,256fold
+188,256fold
+265,292fold
+265,292fold
+301,328fold
+301,328fold
+338,366fold
+338,366fold
+35
+normal zc
+60
+normal zc
+87
+normal zc
+110
+normal zc
+128
+normal zc
+150
+normal zc
+167
+normal zc
+188
+normal zo
+188
+normal zo
+188
+normal zo
+214
+normal zo
+188
+normal zc
+188
+normal zo
+265
+normal zo
+265
+normal zc
+265
+normal zo
+301
+normal zo
+301
+normal zc
+301
+normal zo
+338
+normal zo
+338
+normal zc
+338
+normal zo
+let s:l = 329 - ((149 * winheight(0) + 19) / 39)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal zt
+329
+normal 0
+normal w
+argglobal
+edit libfnc/PortfolioAnalyzerDelegate.cpp
+setlocal autoindent
+setlocal autoread
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal cindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal noexpandtab
+if &filetype != 'cpp'
+setlocal filetype=cpp
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=manual
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatoptions=croql
+setlocal grepprg=
+setlocal iminsert=2
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal nonumber
+setlocal path=
+setlocal nopreviewwindow
+setlocal noreadonly
+setlocal noscrollbind
+setlocal shiftwidth=3
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal suffixesadd=
+setlocal swapfile
+if &syntax != 'cpp'
+setlocal syntax=cpp
+endif
+setlocal tabstop=3
+setlocal tags=
+setlocal textwidth=75
+setlocal thesaurus=
+setlocal wrap
+setlocal wrapmargin=0
+silent! normal zE
+let s:l = 34 - ((0 * winheight(0) + 0) / 1)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal zt
+34
+normal 016l
+normal w
+normal 3w
+set winheight=1 winwidth=20 shortmess=filnxtToO
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . s:sx
+endif
+let &so = s:so_save | let &siso = s:siso_save

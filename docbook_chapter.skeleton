@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- $Id$ -->
+<chapter>
+  <chapterinfo>
+    <releaseinfo>$Revision$</releaseinfo>
+    <pubdate>$Date$</pubdate>
+  </chapterinfo>
+
+  <title></title>
+  <sect1>
+    <title></title>
+    <para>
+    </para>
+  </sect1>
+</chapter>
