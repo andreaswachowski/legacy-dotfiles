@@ -81,7 +81,7 @@ let b:loaded_cpp_BuildTemplates_local_settings = 1
 " suppose so=coqlr
 inoremap <buffer> //@{ <c-R>=MapNoContext('//@{',
       \ '//@{\<cr\>@}')<cr>
-"      \ '//@{\<cr\>@}\<esc\>O\<bs\>\<bs\>')<cr>
+"      \ '//@{\<cr\>@}\<esc\>
 
 
 " }}}
@@ -156,7 +156,7 @@ endfunction
 " }}}
 
 function! s:Cpp_addMethod(name, sig) " {{{
-  silent put = '    /* '.a:name.' */'
+  silent put = '    /** '.a:name.' */'
   silent put = '        '.a:sig
 endfunction
 "}}}
@@ -190,23 +190,27 @@ function! s:Cpp_newClass(name)
   let old_foldenable = &foldenable
   set nofoldenable
   call s:Cpp_bigLine( "Class ".a:name )
+  silent put = '/**'
+  silent put = ' * @ingroup ' . Marker_Txt('Group info') 
+  silent put = ' * ' . Marker_Txt('Description') 
+  silent put = ' */'
   silent put = 'class ' . a:name
   silent put = '{'
 
   " contructions , added after every other group because of reindentation
   call s:Cpp_addGroup(0, "Construction", "public:")
-  call s:Cpp_addMethod("Argument-less constructor", a:name."();")
-  call s:Cpp_addMethod("Copy constructor", a:name."(const ".a:name." & rhs);")
-  call s:Cpp_addMethod("Copy operator", a:name."& operator=(const ".a:name." & rhs);")
+  call s:Cpp_addMethod("Default constructor", a:name."();")
+  call s:Cpp_addMethod("Copy constructor", a:name."(const ".a:name."& rhs);")
+  call s:Cpp_addMethod("Copy operator", a:name."& operator=(const ".a:name."& rhs);")
   call s:Cpp_addMethod("Destructor", "virtual ~".a:name."();")
 
-  " public methods
+  " public member functions
   call search('}')
-  call s:Cpp_addGroup(1, "Public methods", "public:")
+  call s:Cpp_addGroup(1, "Public member functions", "public:")
   
-  " internal methods
+  " internal member functions
   call search('}')
-  call s:Cpp_addGroup(1, "Internal methods", "protected:")
+  call s:Cpp_addGroup(1, "Internal member functions", "protected:")
   
   " Data
   call search('}')
