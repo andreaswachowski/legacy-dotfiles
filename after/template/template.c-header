@@ -18,10 +18,10 @@ VimL: let s:value_end   = '¡'
  *========================================================================
  */
 
-VimL: let s:guard = substitute(toupper(expand("%")),'\c[^a-z0-1_]','_','g')
-#ifndef __¡s:guard¡__
-#define __¡s:guard¡__
+VimL: let s:guard = substitute(substitute(expand("%:r"),'\c[^a-z0-1_]','_','g'),'$',"_INCL",'g')
+#ifndef ¡s:guard¡
+#define ¡s:guard¡
 
 ¡Marker_Txt("Definitions here")¡
 
-#endif // __¡s:guard¡__
+#endif // ¡s:guard¡
