@@ -6,8 +6,6 @@ VimL: let s:value_end   = '¡'
  *
  * ¡Marker_Txt("short description")¡
  *
- * ¡Marker_Txt("description")¡
- *
  * @author  ¡substitute(Author(),'\r"','\r *','g')¡ (original author)
  * @author  $Author$ (last modifier)
  * $Revision$
