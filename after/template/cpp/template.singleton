@@ -34,8 +34,8 @@ public:
     //@}
 
 
-/*-------------------------------[ Public methods ]--------------------------*/
-    /** @name Public methods */
+/*---------------------------[ Public member functions ]---------------------*/
+    /** @name Public member functions */
     //@{
 public:
 		¡Marker_Txt('')¡;
