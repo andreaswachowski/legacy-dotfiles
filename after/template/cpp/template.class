@@ -7,32 +7,41 @@ VimL:"
 /*===========================================================================*/
 /*===============================[ Class ¡s:clsname¡ ]==============================*/
 /*===========================================================================*/
-class ¡s:clsname¡
+/**
+ * @ingroup ¡Marker_Txt('group name')¡
+ *
+ * ¡Marker_Txt('Brief description')¡
+ * ¡Marker_Txt('Description')¡
+ */
+class ¡s:clsname¡ ¡Marker_Txt('Inheritance')¡
 {
 /*-------------------------------[ Construction ]----------------------------*/
 	/** @name Construction */
     //@{ 
 public:
-    /* Argument-less constructor */
+    /** Default constructor */
     ¡s:clsname¡();
-    /* Copy constructor */
+
+    /** Copy constructor */
     ¡s:clsname¡(const ¡s:clsname¡ & rhs);
-    /* Copy operator */
+
+    /** Copy operator */
     ¡s:clsname¡& operator=(const ¡s:clsname¡ & rhs);
-    /* Destructor */
+
+    /** Destructor */
     virtual ~¡s:clsname¡();
     //@}
 
 
 /*-------------------------------[ Public methods ]--------------------------*/
-    /** @name Public methods */
+    /** @name Public member functions */
     //@{
 public:
 		¡Marker_Txt('')¡;
     //@}
 
 /*-------------------------------[ Internal methods ]------------------------*/
-    /** @name Internal methods */
+    /** @name Internal member functions */
     //@{
 protected:
 		¡Marker_Txt('')¡;
