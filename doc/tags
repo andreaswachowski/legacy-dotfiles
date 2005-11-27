@@ -130,6 +130,15 @@ cvscommand-options	cvscommand.txt	/*cvscommand-options*
 cvscommand-statusline	cvscommand.txt	/*cvscommand-statusline*
 cvscommand.txt	cvscommand.txt	/*cvscommand.txt*
 g%	matchit.txt	/*g%*
+manpageview	manpageview.txt	/*manpageview*
+manpageview-contents	manpageview.txt	/*manpageview-contents*
+manpageview-copyright	manpageview.txt	/*manpageview-copyright*
+manpageview-history	manpageview.txt	/*manpageview-history*
+manpageview-info	manpageview.txt	/*manpageview-info*
+manpageview-options	manpageview.txt	/*manpageview-options*
+manpageview-perl	manpageview.txt	/*manpageview-perl*
+manpageview-usage	manpageview.txt	/*manpageview-usage*
+manpageview.txt	manpageview.txt	/*manpageview.txt*
 matchit	matchit.txt	/*matchit*
 matchit-%	matchit.txt	/*matchit-%*
 matchit-\1	matchit.txt	/*matchit-\\1*
@@ -170,7 +179,6 @@ taglist-using	taglist.txt	/*taglist-using*
 taglist.txt	taglist.txt	/*taglist.txt*
 totd-installation	totd.txt	/*totd-installation*
 totd.txt	totd.txt	/*totd.txt*
-vimtips.txt	../plugin/vimtips/vimtips.txt	/*vimtips.txt*
 xml-plugin-callbacks	xml-plugin.txt	/*xml-plugin-callbacks*
 xml-plugin-settings	xml-plugin.txt	/*xml-plugin-settings*
 xml-plugin.txt	xml-plugin.txt	/*xml-plugin.txt*
