@@ -22,14 +22,15 @@ nnoremap <silent> <F8> :Tlist<CR>
 " map <M-9> <C-]>
 if &t_Co > 2 || has("gui_running")
   syntax on
+  highlight Statement ctermfg=1
+endif
+if has("gui_running")
   set guioptions-=m
   set guioptions-=T
-  if &term != "cygwin"
-    set lines=45
-    set columns=80
-  endif
-  highlight Statement ctermfg=1
   set guifont=CMTT8:h12:cSYMBOL
+  set guifont="SUSE Sans Mono 10"
+  set lines=45
+  set columns=80
 endif
 
 " FILETYPE-SPECIFIC SETTINGS
