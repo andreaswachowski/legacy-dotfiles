@@ -883,7 +883,7 @@ aug Matchit
   " - match <!, > inlined dtd's. This is not perfect, as it
   "   gets confused for example by
   "       <!ENTITY gt ">">
-  au! FileType xml,sgml,entity if !exists("b:match_words") |
+  au! FileType docbk,xml,sgml,entity if !exists("b:match_words") |
     \ let b:match_ignorecase=0 | let b:match_words =
     \ '<:>,' .
     \ '<\@<=!\[CDATA\[:]]>,'.
