@@ -132,6 +132,8 @@ else
 	au BufWrite activitylog.txt mkview
 
 	filetype plugin indent on
+	" filetype for Supermemo Databases:
+	au BufRead,BufNewFile *.smd		setfiletype smd
 endif
 
 augroup gzip
