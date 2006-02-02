@@ -134,6 +134,10 @@ else
 	filetype plugin indent on
 	" filetype for Supermemo Databases:
 	au BufRead,BufNewFile *.smd		setfiletype smd
+
+	" filetype for RPMS ROS logs:
+	au BufRead,BufNewFile ros.log	setfiletype roslog
+	au BufRead,BufNewFile ros.prot	setfiletype roslog
 endif
 
 augroup gzip
