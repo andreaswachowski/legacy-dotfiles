@@ -27,8 +27,8 @@ endif
 if has("gui_running")
   set guioptions-=m
   set guioptions-=T
-  set guifont=CMTT8:h12:cSYMBOL
-  set guifont="SUSE Sans Mono 10"
+"  set guifont=CMTT8:h12:cSYMBOL
+"  set guifont="SUSE Sans Mono 10"
   set lines=45
   set columns=80
 endif
