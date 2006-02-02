@@ -14,18 +14,6 @@ endif
 " Don't do other file type settings for this buffer
 let b:did_ftplugin = 1
 
-:function RosLogFolds(num)
-:  if a:num == 0
-:     return 0
-:  else
-:     if getline(a:num)=~'.*ENTER.*'
-:        return 'a1'
-:     else
-:        if getline(a:num)=~'.*LEAVE.*'
-:           return 's1'
-:        else
-:           return '='
-:endfunction
-
-set foldexpr=RosLogFolds(v:lnum)
-set foldmethod=expr
+syn region myFold start="ENTER" end="LEAVE" transparent fold
+syn sync fromstart
+set foldmethod=syntax
