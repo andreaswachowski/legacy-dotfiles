@@ -8,6 +8,9 @@ set sw=70
 set tw=0
 set noexpandtab
 set list
+" Supermemo does only handle latin1, not UTF-8. Upon saving the file,
+" we convert thus to latin1:
+set fileencoding=latin1
 
 iab cmv <tab><tab><tab><tab>Class, Method, and Variable Modifiers
 iab oa <tab><tab><tab><tab>Operators and Assignments
