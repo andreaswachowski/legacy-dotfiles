@@ -241,11 +241,6 @@
 "
 " Section: Plugin header {{{1
 
-if v:version < 602
-  echohl WarningMsg|echomsg "SVNCommand 1.69 or later requires VIM 6.2 or later"|echohl None
-  finish
-endif
-
 " loaded_svncommand is set to 1 when the initialization begins, and 2 when it
 " completes.  This allows various actions to only be taken by functions after
 " system initialization.
@@ -254,6 +249,11 @@ if exists("loaded_svncommand")
    finish
 endif
 let loaded_svncommand = 1
+
+if v:version < 602
+  echohl WarningMsg|echomsg "SVNCommand 1.69 or later requires VIM 6.2 or later"|echohl None
+  finish
+endif
 
 " Section: Event group setup {{{1
 
