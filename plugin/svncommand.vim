@@ -738,7 +738,13 @@ function! s:SVNCommit()
   let fileName=bufname(svnBufferCheck)
   let realFilePath=s:SVNResolveLink(fileName)
   let newCwd=fnamemodify(realFilePath, ':h')
-  let realFileName=fnamemodify(realFilePath, ':t')
+  if strlen(newCwd) == 0
+    " Account for autochdir being in effect, which will make this blank, but
+    " we know we'll be in the current directory for the original file.
+    let newCwd = getcwd()
+  endif
+
+let realFileName=fnamemodify(realFilePath, ':t')
 
   if s:SVNEditFile(messageFileName, svnBufferCheck) == -1
     let &shellslash = shellSlashBak
