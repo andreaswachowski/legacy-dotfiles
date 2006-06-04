@@ -1084,6 +1084,17 @@ function! s:SVNVimDiff(...)
     endif
 
     let s:vimDiffSourceBuffer = originalBuffer
+
+    " Avoid executing the modeline in the current buffer after the autocommand.
+
+    let currentBuffer = bufnr('%')
+    let saveModeline = getbufvar(currentBuffer, '&modeline')
+    try
+      call setbufvar(currentBuffer, '&modeline', 0)
+      silent do SVNCommand User SVNVimDiffFinish
+    finally
+      call setbufvar(currentBuffer, '&modeline', saveModeline)
+    endtry
     return resultBuffer
   finally
     let s:SVNCommandEditFileRunning = s:SVNCommandEditFileRunning - 1
