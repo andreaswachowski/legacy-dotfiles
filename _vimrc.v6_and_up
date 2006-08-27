@@ -1,0 +1,7 @@
+" au BufEnter activitylog.txt so ~/.vim/activitylog_in.vim
+au BufRead activitylog.txt loadview
+au BufWrite activitylog.txt mkview
+
+filetype plugin indent on
+" filetype for Supermemo Databases:
+au BufRead,BufNewFile *.smd		setfiletype smd

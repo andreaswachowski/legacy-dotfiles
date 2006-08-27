@@ -1,0 +1,13 @@
+if version>= 600
+  " filetype for RPMS ROS logs:
+  au BufRead,BufNewFile ros.log	setfiletype roslog
+  au BufRead,BufNewFile ros.prot	setfiletype roslog
+endif
+
+" Vim Plugin taglist.vim (http://www.vim.org/scripts/script.php?script_id=273)
+let Tlist_Ctags_Cmd="/export/home/anwa/local/sparc-sun-solaris2.8/bin/ctags"
+nnoremap <silent> <F8> :Tlist<CR>
+
+set tags=/export/home/anwa/ctags_dbs/libdss_401.ctags.out
+
+
