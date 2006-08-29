@@ -232,7 +232,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     endfun
     " }}}
 
-    call <SID>X("Normal", "262626", "fdfdfd", "")
+    call <SID>X("Normal", "262626", "dadada", "")
     " Below 8700ff instead of Magenta, which is unreadable with red background in diff mode
     call <SID>X("Title", "8700ff", "", "")
     call <SID>X("Constant", "8700ff", "", "")
