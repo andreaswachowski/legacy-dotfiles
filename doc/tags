@@ -213,6 +213,7 @@ manpageview-options	manpageview.txt	/*manpageview-options*
 manpageview-perl	manpageview.txt	/*manpageview-perl*
 manpageview-usage	manpageview.txt	/*manpageview-usage*
 manpageview.txt	manpageview.txt	/*manpageview.txt*
+manpageview_extend	manpageview.txt	/*manpageview_extend*
 matchit	matchit.txt	/*matchit*
 matchit-%	matchit.txt	/*matchit-%*
 matchit-\1	matchit.txt	/*matchit-\\1*

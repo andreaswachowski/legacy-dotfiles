@@ -1,4 +1,4 @@
-*manpageview.txt*	Man Page Viewer			Sep 26, 2005
+*manpageview.txt*	Man Page Viewer			Apr 11, 2006
 
 Author:  Charles E. Campbell, Jr.  <NdrchipO@ScampbellPfamily.AbizM>
 	  (remove NOSPAM from Campbell's email first)
@@ -11,13 +11,111 @@ Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*manpageview-copyright*
 1. Contents				*manpageview* *manpageview-contents*
 
 	1. Contents.................: |manpageview-contents|
-	2. ManPageView Options......: |manpageview-options|
-	3. ManPageView Usage........: |manpageview-usage|
+	2. ManPageView Usage........: |manpageview-usage|
+	3. ManPageView Options......: |manpageview-options|
 	4. ManPageView History......: |manpageview-history|
 
 ==============================================================================
+2. ManPageView Usage					*manpageview-usage*
+>
+	:Man topic
+	:Man topic booknumber
+	:Man booknumber topic
+	:Man topic(booknumber)
+	:Man      -- will restore position prior to use of :Man
+	             (only for g:manpageview_winopen == "only")
+<
+	Put cursor on topic, press "K" while in normal mode.
+	(This works if (a) you've not mapped some other key
+	to <Plug>ManPageView, and (b) if |keywordprg| is "man",
+	which it is by default)
 
-2. ManPageView Options					*manpageview-options*
+	If your "man" command requires options, you may specify them
+	with the g:manpageview_options variable in your <.vimrc>.
+
+	In addition, one may specify open help and specify an 
+	opening style (see g:manpageview_winopen below): >
+
+		:HMan topic     -- g:manpageview_winopen= "hsplit"
+		:VMan topic     -- g:manpageview_winopen= "vsplit"
+		:OMan topic     -- g:manpageview_winopen= "osplit"
+		:RMan topic     -- g:manpageview_winopen= "reuse"
+<
+	To support perl, manpageview now can switch to using perldoc
+	instead of man.  In fact, the facility is generalized to
+	allow multiple help viewing systems.
+
+	PERL					*manpageview-perl*
+
+	For perl, the following command, >
+		:Man sprintf.pl
+<	will bring up the perldoc version of sprintf.  The perl
+	support includes a "path" of options to use with perldoc: >
+		g:manpageview_options_pl= ";-f;-q"
+<	Thus just the one suffix (.pl) with manpageview handles
+	embedded perl documentation, perl builtin functions, and
+	perl FAQ keywords.
+
+	If the filetype is "perl", which is determined by vim
+	for syntax highlighting, the ".pl" suffix may be dropped.
+	For example, when editing a "abc.pl" file, >
+		:Man sprintf
+<	will return the perl  help for sprintf.
+
+	INFO					*manpageview-info*
+
+	Info pages are supported by appending a ".i" suffix: >
+		:Man info.i
+<	A number of maps are provided: >
+		MAP	EFFECT
+		> n	go to next node
+		< p	go to previous node
+		d       go to the top-level directory
+		u	go to up node
+		t	go to top node
+		H	give help
+		<bs>    go up one page
+		<del>   go up one page
+		<tab>   go to next hyperlink
+<
+
+	PHP
+
+	For php help, Manpageview uses links to get help from
+	http://www.php.net (by default).  The filetype as determined
+	for syntax highlighting is used to signal manpageview to use
+	php help.  As an example, >
+		:Man bzopen
+<	will get help for bzopen for php.
+
+	EXTENDING MANPAGEVIEW
+
+	To extend manpageview to handle other documentation systems,
+	manpageview has some special variables with a common extension: >
+
+		g:manpageview_pgm_{ext}
+		g:manpageview_options_{ext}
+		g:manpageview_sfx_{ext}
+<
+	For perl, the {ext} is ".pl", and the variables are set to: >
+
+     	     let g:manpageview_pgm_pl     = "perldoc"
+     	     let g:manpageview_options_pl = ";-f;-q"
+<
+	For info, that {ext} is ".i", and the extension variables are
+	set to: >
+
+     	     let g:manpageview_pgm_i     = "info"
+     	     let g:manpageview_options_i = "--output=-"
+     	     let g:manpageview_syntax_i  = "info"
+     	     let g:manpageview_K_i       = "<sid>ManPageInfo(0)"
+     	     let g:manpageview_init_i    = "call ManPageInfoInit()"
+<
+	The help on |manpageview_extend| covers these variables in more
+	detail.
+
+==============================================================================
+3. ManPageView Options					*manpageview-options*
 
 	g:manpageview_options : extra options that will be passed on when
 	                        invoking the man command
@@ -50,132 +148,94 @@ Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*manpageview-copyright*
 	            let g:manpageview_server= "somehostname"
 	            let g:manpageview_user  = "username"
 
-	g:manpageview_init_{extension}:
-	g:manpageview_K_{extension}:
-	g:manpageview_options_{extension}:
-	g:manpageview_pfx_{extension}:
-	g:manpageview_pgm_{extension}:
-	g:manpageview_sfx_{extension}:
-	g:manpageview_syntax_{extension}:
+	g:manpageview_init_{ext}:			*manpageview_extend*
+	g:manpageview_K_{ext}:
+	g:manpageview_options_{ext}:
+	g:manpageview_pfx_{ext}:
+	g:manpageview_pgm_{ext}:
+	g:manpageview_sfx_{ext}:
+	g:manpageview_syntax_{ext}:
 
 		With these options, one may specify an extension on a topic
 		and have a special program and customized options for that
-		program used instead of man itself.  As an example, consider perl: >
+		program used instead of man itself.  As an example, consider
+		perl: >
 
 			let g:manpageview_pgm_pl = "perldoc"
-			let g:manpageview_options= ""
+			let g:manpageview_options= ";-f;-q"
 <
-		The g:manpageview_init_{extension} specifies a function to be
-		called for initialization.  The info handler, for example,
-		uses this function to specify buffer-local maps.
+		Note that, for perl, the options consist of a sequence of
+		options to be tried, separated by semi-colons.
 
-		The g:manpageview_K_{extension} specifies a function to be
-		invoked when the "K" key is tapped.  By default, it calls
+		The g:manpageview_init_{ext} specifies a function to be called
+		for initialization.  The info handler, for example, uses this
+		function to specify buffer-local maps.
+
+		The g:manpageview_K_{ext} specifies a function to be invoked
+		when the "K" key is tapped.  By default, it calls
 		s:ManPageView().
 
-		The g:manpageview_options_{extension} specifies what options
-		are needed.
+		The g:manpageview_options_{ext} specifies what options are
+		needed.
 
-		The g:manpageview_pfx_{extension} specifies a prefix
-		to prepend to the nominal manpage name.
+		The g:manpageview_pfx_{ext} specifies a prefix to prepend to
+		the nominal manpage name.
 
-		The g:manpageview_pgm_{extension} specifies which program
-		to run for help.
+		The g:manpageview_pgm_{ext} specifies which program to run for
+		help.
 
-		The g:manpageview_sfx_{extension} specifies a suffix
-		to append to the nominal manpage name.  Without this last
-		option, the provided suffix (ie. Man sprintf.pl 's  ".pl")
-		will be elided.  With this option, the
-		g:manpageview_sfx_{extension} will be appended.
+		The g:manpageview_sfx_{ext} specifies a suffix to append to
+		the nominal manpage name.  Without this last option, the
+		provided suffix (ie. Man sprintf.pl 's  ".pl") will be elided.
+		With this option, the g:manpageview_sfx_{ext} will be
+		appended.
 
-		The g:manpageview_syntax_{extension} specifies a highlighting
-		file to be used for this particular extension type.
+		The g:manpageview_syntax_{ext} specifies a highlighting file
+		to be used for this particular extension type.
 
 	You may map some key other than "K" to invoke ManPageView; as an
 	example: >
 		nmap V <Plug>ManPageView
 <	Put this in your <.vimrc>.
 
-==============================================================================
-
-3. ManPageView Usage					*manpageview-usage*
-
-	:Man topic
-	:Man topic booknumber
-	:Man booknumber topic
-	:Man topic(booknumber)
-	:Man      -- will restore position prior to use of :Man
-	             (only for g:manpageview_winopen == "only")
-
-	Put cursor on topic, press "K" while in normal mode.
-	(This works if (a) you've not mapped some other key
-	to <Plug>ManPageView, and (b) if |keywordprg| is "man",
-	which it is by default)
-
-	If your "man" command requires options, you may specify them
-	with the g:manpageview_options variable in your <.vimrc>.
-
-	To support perl, manpageview now can switch to using perldoc
-	instead of man.  In fact, the facility is generalized to
-	allow multiple help viewing systems.
-
-	PERL					*manpageview-perl*
-
-	For perl, the following command, >
-		:Man sprintf.pl
-<	will bring up the perldoc version of sprintf.  To see *.pm
-	files' internal help, use >
-		:Man somefile.pm
-<	For embedded help in user *.pl files, use >
-		:Man somefile.upl
-<
-	To suppport perl and other such help, Manpageview has three
-	variables: >
-		g:manpageview_pgm_{ext}
-		g:manpageview_options_{ext}
-		g:manpageview_sfx_{ext}
-<
-	For perl, manpageview has built some settings in: >
-
-                ext     pgm         options        sfx
-		.pl     perldoc     -f              -
-		.pm     perldoc      -              -
-		.upl    perldoc      -             .pl
-<
-	INFO					*manpageview-info*
-
-	Info pages are supported by appending a ".i" suffix: >
-		:Man info.i
-<	A number of maps are provided: >
-		MAP	EFFECT
-		> n	go to next node
-		< p	go to previous node
-		d       go to the top-level directory
-		u	go to up node
-		t	go to top node
-		H	give help
-		<bs>    go up one page
-		<del>   go up one page
-		<tab>   go to next hyperlink
-<
 
 ==============================================================================
-
-3. ManPageView History					*manpageview-history*
+4. ManPageView History				*manpageview-history* {{{1
 
 	Thanks go to the various people who have contributed changes,
 	pointed out problems, and made suggestions!
+             
+	v15, Jan 23, 2006 : * works around nomagic option
+	                    * works around cwh=1 to avoid Hit-Enter prompts
+	     Feb 13, 2006   * the test for keywordprg was for "man"; now its
+	                      for a regular expression "^man\>" (so its
+			      immune to the use of options)
+	     Apr 11, 2006   * HMan, OMan, VMan, Rman commands implemented
+	     Jun 27, 2006   * escaped any spaces coming from tempname()
+	v14, Nov 23, 2005 : * "only" was occasionally issuing an "Already one
+	                      window" message, which is now prevented
+	     Nov 29, 2005   * Aaron Griffin found that setting gdefault
+			      gave manpageview problems with ctrl-hs.  Fixed.
+	     Dec 16, 2005   * Suresh Govindachar asked about letting
+	                      manpageview also handle perldoc -q manpages.
+			      IMHO this was getting cumbersome, so I extended
+			      opt to allow a semi-colon separated "path" of
+			      up to three options to try.
+	     Dec 20, 2005   * In consultation with Gareth Oakes, manpageview
+	                      needed some quoting and backslash-fixes to work
+			      properly with windows and perldoc.
+	     Dec 29, 2005   * added links-based help for php functions
 
-	v13, Jul 19, 2005 : included niebie's changes to manpageview -
-	                    <bs>, <del> to scroll one page up,
-			    <tab> to go to the next hyperlink
-			    d     to go to the top-level directory
-			    and some bugfixes ([] to \[ \], and redirecting
-			    stderr to /dev/null by default)
-	     Aug 17, 2005 * report option workaround
-	     Sep 26, 2005 * :Man -k  now uses "man -k" to generate a keyword
-	                    listing
-			  * included syntax/man.vim and syntax/mankey.vim
+	v13, Jul 19, 2005 : * included niebie's changes to manpageview -
+	                      <bs>, <del> to scroll one page up,
+			      <tab> to go to the next hyperlink
+			      d     to go to the top-level directory
+			      and some bugfixes ([] to \[ \], and redirecting
+			      stderr to /dev/null by default)
+	     Aug 17, 2005   * report option workaround
+	     Sep 26, 2005   * :Man -k  now uses "man -k" to generate a keyword
+	                      listing
+			    * included syntax/man.vim and syntax/mankey.vim
 	v12, Jul 11, 2005 : unmap K was causing "noise" when it was first
 			    used.  Fixed.
 	11: * K now <buffer>-mapped to call ManPageView() 
@@ -234,4 +294,4 @@ Copyright: (c) 2004-2005 by Charles E. Campbell, Jr.	*manpageview-copyright*
 	1 : the epoch
 
 ==============================================================================
-vim:tw=78:ts=8:ft=help
+vim:tw=78:ts=8:ft=help:fdm=marker
