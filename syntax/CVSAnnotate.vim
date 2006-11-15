@@ -1,8 +1,7 @@
-" $Id$
 " Vim syntax file
 " Language:	CVS annotate output
-" Maintainer:	Bob Hiestand <bob@hiestandfamily.org>
-" Last Change:	$Date$
+" Maintainer:	Bob Hiestand <bob.hiestand@gmail.com>
+" Last Change:	2006/03/06
 " Remark:	Used by the cvscommand plugin.  Originally written by Mathieu
 " Clabaut
 if version < 600
