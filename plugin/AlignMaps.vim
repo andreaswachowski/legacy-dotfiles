@@ -1,13 +1,22 @@
 " AlignMaps:   Alignment maps based upon <Align.vim>
 " Maintainer:  Dr. Charles E. Campbell, Jr. <Charles.Campbell@gsfc.nasa.gov>
-" Last Change: May 13, 2004
-" Version:     28
-" License:     GPL (Gnu Public License)
+" Date:        Sep 08, 2006
+" Version:     35
 "
 " NOTE: the code herein needs vim 6.0 or later
-"       and needs <Align.vim> v6 or later
+"                       needs <Align.vim> v6 or later
+"                       needs <cecutil.vim> v5 or later
+" Copyright:    Copyright (C) 1999-2005 Charles E. Campbell, Jr. {{{1
+"               Permission is hereby granted to use and distribute this code,
+"               with or without modifications, provided that this copyright
+"               notice is copied with it. Like anything else that's free,
+"               AlignMaps.vim is provided *as is* and comes with no warranty
+"               of any kind, either expressed or implied. By using this
+"               plugin, you agree that in no event will the copyright
+"               holder be liable for any damages resulting from the use
+"               of this software.
 "
-" Usage:
+" Usage: {{{1
 " Use 'a to mark beginning of to-be-aligned region,   Alternative:  use v
 " move cursor to end of region, and execute map.      (visual mode) to mark
 " The maps also set up marks 'y and 'z, and retain    region, execute same map.
@@ -18,127 +27,197 @@
 " specify that the maps start how he or she prefers.
 "
 " Note: these maps all use <Align.vim>.
+"
+" Romans 1:20 For the invisible things of Him since the creation of the {{{1
+" world are clearly seen, being perceived through the things that are
+" made, even His everlasting power and divinity; that they may be
+" without excuse.
 " ---------------------------------------------------------------------
 
-" Prevent duplicate loading
+" Load Once: {{{1
 if exists("g:loaded_alignmaps") || &cp
  finish
 endif
-let g:loaded_alignmaps= 1
+let g:loaded_alignmaps = "v35"
+let s:keepcpo          = &cpo
+set cpo&vim
 
 " ---------------------------------------------------------------------
-
-" WS: wrapper start (internal)   Produces a blank line above and
-"     below, marks with 'y and 'z
+" WS: wrapper start map (internal)  {{{1
+" Produces a blank line above and below, marks with 'y and 'z
 if !hasmapto('<Plug>WrapperStart')
- nmap <unique> \WS	<Plug>AlignMapsWrapperStart
+ nmap <unique> <SID>WS	<Plug>AlignMapsWrapperStart
 endif
-nmap <silent> <script> <Plug>AlignMapsWrapperStart	:set lz<CR>:call <SID>WrapperStart()<CR>
-
-" WrapperStart:
-fu! <SID>WrapperStart()
-  let b:alignmaps_posn        = <SID>GetPosn()
-  let b:alignmaps_keepsearch  = @/
-  let b:alignmaps_keepmy      = <SID>GetMark("'y")
-  let b:alignmaps_keepmz      = <SID>GetMark("'z")
-  let b:alignmaps_keepgd      = &gdefault
-  set nogd
-  put =''
-  norm! mz'a
-  put! = ''
-  let b:alignmaps_ch= &ch
-  set ch=2
-  norm! my
-  exe "'y,'zs/@/\177/ge"
-  call AlignPush()
-  norm! 'zk
-endfunction
+nmap <silent> <script> <Plug>AlignMapsWrapperStart	:set lz<CR>:call AlignWrapperStart()<CR>
 
 " ---------------------------------------------------------------------
+" AlignWrapperStart: {{{1
+fun! AlignWrapperStart()
+"  call Dfunc("AlignWrapperStart()")
 
-" WE: wrapper end (internal)   Removes guard lines,
-"     restores marks y and z, and restores search pattern
-if !hasmapto('<Plug>WrapperEnd')
- nmap <unique> \WE	<Plug>AlignMapsWrapperEnd
-endif
-nmap <silent> <script> <Plug>AlignMapsWrapperEnd	:call <SID>WrapperEnd()<CR>:set nolz<CR>
+  if !exists("s:alignmaps_wrapcnt") || s:alignmaps_wrapcnt <= 0
+"   call Decho("wrapper initialization")
+   let s:alignmaps_wrapcnt    = 1
+   let s:alignmaps_keepgd     = &gdefault
+   let s:alignmaps_keepsearch = @/
+   let s:alignmaps_keepch     = &ch
+   let s:alignmaps_keepmy     = SaveMark("'y")
+   let s:alignmaps_keepmz     = SaveMark("'z")
+   let s:alignmaps_posn       = SaveWinPosn(0)
+   " set up fencepost blank lines
+   put =''
+   norm! mz'a
+   put! =''
+   norm! my
+   let s:alignmaps_zline      = line("'z")
+   exe "'y,'zs/@/\177/ge"
+  else
+"   call Decho("embedded wrapper")
+   let s:alignmaps_wrapcnt    = s:alignmaps_wrapcnt + 1
+   norm! 'yjma'zk
+  endif
 
-" WrapperEnd:
-fun! <SID>WrapperEnd()
-  'y,'zs/\s\+$//e
-  exe "'y,'zs/\177/@/ge"
-  norm! 'yjmakdd'zdd
-  exe "set ch=".b:alignmaps_ch
-  unlet b:alignmaps_ch
-  let @/= b:alignmaps_keepsearch
-  call AlignPop()
-
-  " cleanup
-  call <SID>PutMark(b:alignmaps_keepmy)
-  call <SID>PutMark(b:alignmaps_keepmz)
-  call <SID>PutPosn(b:alignmaps_posn)
-  unlet b:alignmaps_keepmy  b:alignmaps_keepmz b:alignmaps_posn
-  let &gd= b:alignmaps_keepgd
+  " change some settings to align-standard values
+  set nogd
+  set ch=2
+  AlignPush
+  norm! 'zk
+"  call Dret("AlignWrapperStart : alignmaps_wrapcnt=".s:alignmaps_wrapcnt." my=".line("'y")." mz=".line("'z"))
 endfun
 
 " ---------------------------------------------------------------------
+" WE: wrapper end (internal)   {{{1
+" Removes guard lines, restores marks y and z, and restores search pattern
+if !hasmapto('<Plug>WrapperEnd')
+ nmap <unique> <SID>WE	<Plug>AlignMapsWrapperEnd
+endif
+nmap <silent> <script> <Plug>AlignMapsWrapperEnd	:call AlignWrapperEnd()<CR>:set nolz<CR>
 
-" complex C-code alignment maps
-map <silent> <Leader>a?    \WS:AlignCtrl mIp1P1lC ? : : : : <CR>:'a,.Align<CR>:'a,'z-1s/\(\s\+\)? /?\1/e<CR>\WE
-map <silent> <Leader>a,    \WS:'y,'zs/\(\S\)\s\+/\1 /ge<CR>'yjma'zk<Leader>jnr,<CR>:silent 'y,'zg/,/let @x=substitute(getline(line(".")),'^\(.\{-}\) \S\+\s*,.*$','silent s/,/;\\r\1 /g','')<Bar>@x<CR>\WE
-map <silent> <Leader>a<    \WS:AlignCtrl mIp1P1=l << >><CR>:'a,.Align<CR>\WE
-map <silent> <Leader>abox  \WS:let b:alignmaps_iws=substitute(getline("'a"),'^\(\s*\).*$','\1','e')<CR>:'a,'z-1s/^\s\+//e<CR>:'a,'z-1s/^.*$/@&@/<CR>:AlignCtrl m=p01P0w @<CR>:'a,.Align<CR>:'a,'z-1s/@/ * /<CR>:'a,'z-1s/@$/*/<CR>'aYP:s/./*/g<CR>0r/'zkYp:s/./*/g<CR>0r A/<Esc>:exe "'a-1,'z-1s/^/".b:alignmaps_iws."/e"<CR>\WE
-map <silent> <Leader>acom  \WS:'a,.s/\/[*/]/@&@/e<CR>:'a,.s/\*\//@&/e<CR>'zk<Leader>tW@:'y,'zs/^\(\s*\) @/\1/e<CR>:'y,'zs/ @//eg<CR>\WE
-map <silent> <Leader>ascom \WS:'a,.s/\/[*/]/@&@/e<CR>:'a,.s/\*\//@&/e<CR>:silent! 'a,.g/^\s*@\/[*/]/s/@//ge<CR>:AlignCtrl v ^\s*\/[*/]<CR>:AlignCtrl g \/[*/]<CR>'zk<Leader>tW@:'y,'zs/^\(\s*\) @/\1/e<CR>:'y,'zs/ @//eg<CR>\WE
-map <silent> <Leader>adec  \WS:'a,'zs/\([^ \t/(]\)\([*&]\)/\1 \2/e<CR>:'y,'zv/^\//s/\([^ \t]\)\s\+/\1 /ge<CR>:'y,'zv/^\s*[*/]/s/\([^/][*&]\)\s\+/\1/ge<CR>:'y,'zv/^\s*[*/]/s/^\(\s*\%(\h\w*\s\+\%([a-zA-Z_*(&]\)\@=\)\+\)\([*(&]*\)\s*\([a-zA-Z0-9_()]\+\)\s*\(\(\[.\{-}]\)*\)\s*\(=\)\=\s*\(.\{-}\)\=\s*;/\1@\2#@\3\4@\6@\7;@/e<CR>:'y,'zv/^\s*[*/]/s/\*\/\s*$/@*\//e<CR>:'y,'zv/^\s*[*/]/s/^\s\+\*/@@@@@* /e<CR>:'y,'zv/^\s*[*/]/s/^@@@@@\*\(.*[^*/]\)$/&@*/e<CR>'yjma'zk:AlignCtrl v ^\s*[*/#]<CR><Leader>t@:'y,'zv/^\s*[*/]/s/@ //ge<CR>:'y,'zv/^\s*[*/]/s/\(\s*\);/;\1/e<CR>:'y,'zv/^#/s/# //e<CR>:'y,'zv/^\s\+[*/#]/s/\([^/*]\)\(\*\+\)\( \+\)/\1\3\2/e<CR>:'y,'zv/^\s\+[*/#]/s/\((\+\)\( \+\)\*/\2\1*/e<CR>:'y,'zv/^\s\+[*/#]/s/^\(\s\+\) \*/\1*/e<CR>:'y,'zv/^\s\+[*/#]/s/[ \t@]*$//e<CR>:'y,'zs/^[*]/ */e<CR>\WE
-map <silent> <Leader>adef  \WS:AlignPush<CR>:AlignCtrl v ^\s*\(\/\*\<bar>\/\/\)<CR>:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/^\(\s*\)#\(\s\)*define\s*\(\I[a-zA-Z_0-9(),]*\)\s*\(.\{-}\)\($\<Bar>\/\*\)/#\1\2define @\3@\4@\5/e<CR>:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/\($\<Bar>\*\/\)/@&/e<CR>'zk<Leader>t@'yjma'zk:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/ @//g<CR>\WE
+" ---------------------------------------------------------------------
+" AlignWrapperEnd:	{{{1
+fun! AlignWrapperEnd()
+"  call Dfunc("AlignWrapperEnd() alignmaps_wrapcnt=".s:alignmaps_wrapcnt." my=".line("'y")." mz=".line("'z"))
+
+  " remove trailing white space introduced by whatever in the modification zone
+  'y,'zs/\s\+$//e
+
+  " restore AlignCtrl settings
+  AlignPop
+
+  let s:alignmaps_wrapcnt= s:alignmaps_wrapcnt - 1
+  if s:alignmaps_wrapcnt <= 0
+   " initial wrapper ending
+   exe "'y,'zs/\177/@/ge"
+
+   " if the 'z line hasn't moved, then go ahead and restore window position
+   let zstationary= s:alignmaps_zline == line("'z")
+
+   " remove fencepost blank lines.
+   " restore 'a
+   norm! 'yjmakdd'zdd
+
+   " restore original 'y, 'z, and window positioning
+   call RestoreMark(s:alignmaps_keepmy)
+   call RestoreMark(s:alignmaps_keepmz)
+   if zstationary > 0
+    call RestoreWinPosn(s:alignmaps_posn)
+"    call Decho("restored window positioning")
+   endif
+
+   " restoration of options
+   let &gd= s:alignmaps_keepgd
+   let &ch= s:alignmaps_keepch
+   let @/ = s:alignmaps_keepsearch
+
+   " remove script variables
+   unlet s:alignmaps_keepch
+   unlet s:alignmaps_keepsearch
+   unlet s:alignmaps_keepmy
+   unlet s:alignmaps_keepmz
+   unlet s:alignmaps_keepgd
+   unlet s:alignmaps_posn
+  endif
+
+"  call Dret("AlignWrapperEnd : alignmaps_wrapcnt=".s:alignmaps_wrapcnt." my=".line("'y")." mz=".line("'z"))
+endfun
+
+" ---------------------------------------------------------------------
+" Complex C-code alignment maps: {{{1
+map <silent> <Leader>a?    <SID>WS:AlignCtrl mIp1P1lC ? : : : : <CR>:'a,.Align<CR>:'a,'z-1s/\(\s\+\)? /?\1/e<CR><SID>WE
+map <silent> <Leader>a,    <SID>WS:'y,'zs/\(\S\)\s\+/\1 /ge<CR>'yjma'zk<Leader>jnr,<CR>:silent 'y,'zg/,/call <SID>FixMultiDec()<CR>'z<Leader>adec<SID>WE
+map <silent> <Leader>a<    <SID>WS:AlignCtrl mIp1P1=l << >><CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>a=    <SID>WS:AlignCtrl mIp1P1=l<CR>:AlignCtrl g :=<CR>:'a,'zAlign :\==<CR><SID>WE
+map <silent> <Leader>abox  <SID>WS:let g:alignmaps_iws=substitute(getline("'a"),'^\(\s*\).*$','\1','e')<CR>:'a,'z-1s/^\s\+//e<CR>:'a,'z-1s/^.*$/@&@/<CR>:AlignCtrl m=p01P0w @<CR>:'a,.Align<CR>:'a,'z-1s/@/ * /<CR>:'a,'z-1s/@$/*/<CR>'aYP:s/./*/g<CR>0r/'zkYp:s/./*/g<CR>0r A/<Esc>:exe "'a-1,'z-1s/^/".g:alignmaps_iws."/e"<CR><SID>WE
+map <silent> <Leader>acom  <SID>WS:'a,.s/\/[*/]\/\=/@&@/e<CR>:'a,.s/\*\//@&/e<CR>:'y,'zs/^\( *\) @/\1@/e<CR>'zk<Leader>tW@:'y,'zs/^\(\s*\) @/\1/e<CR>:'y,'zs/ @//eg<CR><SID>WE
+map <silent> <Leader>adcom <SID>WS:'a,.v/^\s*\/[/*]/s/\/[*/]\*\=/@&@/e<CR>:'a,.v/^\s*\/[/*]/s/\*\//@&/e<CR>:'y,'zv/^\s*\/[/*]/s/^\( *\) @/\1@/e<CR>'zk<Leader>tdW@:'y,'zv/^\s*\/[/*]/s/^\(\s*\) @/\1/e<CR>:'y,'zs/ @//eg<CR><SID>WE
+map <silent> <Leader>aocom :AlignPush<CR>:AlignCtrl g /[*/]<CR><Leader>acom:AlignPop<CR>
+map <silent> <Leader>ascom <SID>WS:'a,.s/\/[*/]/@&@/e<CR>:'a,.s/\*\//@&/e<CR>:silent! 'a,.g/^\s*@\/[*/]/s/@//ge<CR>:AlignCtrl v ^\s*\/[*/]<CR>:AlignCtrl g \/[*/]<CR>'zk<Leader>tW@:'y,'zs/^\(\s*\) @/\1/e<CR>:'y,'zs/ @//eg<CR><SID>WE
+map <silent> <Leader>adec  <SID>WS:'a,'zs/\([^ \t/(]\)\([*&]\)/\1 \2/e<CR>:'y,'zv/^\//s/\([^ \t]\)\s\+/\1 /ge<CR>:'y,'zv/^\s*[*/]/s/\([^/][*&]\)\s\+/\1/ge<CR>:'y,'zv/^\s*[*/]/s/^\(\s*\%(\K\k*\s\+\%([a-zA-Z_*(&]\)\@=\)\+\)\([*(&]*\)\s*\([a-zA-Z0-9_()]\+\)\s*\(\(\[.\{-}]\)*\)\s*\(=\)\=\s*\(.\{-}\)\=\s*;/\1@\2#@\3\4@\6@\7;@/e<CR>:'y,'zv/^\s*[*/]/s/\*\/\s*$/@*\//e<CR>:'y,'zv/^\s*[*/]/s/^\s\+\*/@@@@@* /e<CR>:'y,'zv/^\s*[*/]/s/^@@@@@\*\(.*[^*/]\)$/&@*/e<CR>'yjma'zk:AlignCtrl v ^\s*[*/#]<CR><Leader>t@:'y,'zv/^\s*[*/]/s/@ //ge<CR>:'y,'zv/^\s*[*/]/s/\(\s*\);/;\1/e<CR>:'y,'zv/^#/s/# //e<CR>:'y,'zv/^\s\+[*/#]/s/\([^/*]\)\(\*\+\)\( \+\)/\1\3\2/e<CR>:'y,'zv/^\s\+[*/#]/s/\((\+\)\( \+\)\*/\2\1*/e<CR>:'y,'zv/^\s\+[*/#]/s/^\(\s\+\) \*/\1*/e<CR>:'y,'zv/^\s\+[*/#]/s/[ \t@]*$//e<CR>:'y,'zs/^[*]/ */e<CR><SID>WE
+map <silent> <Leader>adef  <SID>WS:AlignPush<CR>:AlignCtrl v ^\s*\(\/\*\<bar>\/\/\)<CR>:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/^\(\s*\)#\(\s\)*define\s*\(\I[a-zA-Z_0-9(),]*\)\s*\(.\{-}\)\($\<Bar>\/\*\)/#\1\2define @\3@\4@\5/e<CR>:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/\($\<Bar>\*\/\)/@&/e<CR>'zk<Leader>t@'yjma'zk:'a,.v/^\s*\(\/\*\<bar>\/\/\)/s/ @//g<CR><SID>WE
 map <silent> <Leader>afnc  :set lz<CR>:silent call <SID>Afnc()<CR>:set nolz<CR>
-map <silent> <Leader>anum  \WS:'a,'zs/\(\d\)\s\+\(-\=[.,]\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0<CR>:'a,'zAlign [.,@]<CR>:'a,'zs/\([-0-9.,]*\)\(\s*\)\([.,]\)/\2\1\3/g<CR>:'a,'zs/@/ /ge<CR>\WE
+if exists("g:alignmaps_usanumber")
+ map <silent> <Leader>anum  <SID>WS:'a,'zs/\(\d\)\s\+\(-\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0r<CR>:'a,'zAlign [.@]<CR>:'a,'zs/@/ /ge<CR>:'a,'zs/\(\.\)\(\s\+\)\([-0-9.,e]\+\)/\1\3\2/ge<CR><SID>WE
+elseif exists("g:alignmaps_euronumber")
+ map <silent> <Leader>anum  <SID>WS:'a,'zs/\(\d\)\s\+\(-\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0r<CR>:'a,'zAlign [,@]<CR>:'a,'zs/@/ /ge<CR>:'a,'zs/\(,\)\(\s\+\)\([-0-9.,e]\+\)/\1\3\2/ge<CR><SID>WE
+else
+ map <silent> <Leader>anum  <SID>WS:'a,'zs/\(\d\)\s\+\(-\=[.,]\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0<CR>:'a,'zAlign [.,@]<CR>:'a,'zs/\([-0-9.,]*\)\(\s*\)\([.,]\)/\2\1\3/g<CR>:'a,'zs/@/ /ge<CR><SID>WE
+endif
+map <silent> <Leader>aunum  <SID>WS:'a,'zs/\(\d\)\s\+\(-\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0r<CR>:'a,'zAlign [.@]<CR>:'a,'zs/@/ /ge<CR>:'a,'zs/\(\.\)\(\s\+\)\([-0-9.,e]\+\)/\1\3\2/ge<CR><SID>WE
+map <silent> <Leader>aenum  <SID>WS:'a,'zs/\(\d\)\s\+\(-\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0r<CR>:'a,'zAlign [,@]<CR>:'a,'zs/@/ /ge<CR>:'a,'zs/\(,\)\(\s\+\)\([-0-9.,e]\+\)/\1\3\2/ge<CR><SID>WE
 
-" html table alignment
-map <silent> <Leader>Htd \WS:'y,'zs%<[tT][rR]><[tT][dD][^>]\{-}>\<Bar></[tT][dD]><[tT][dD][^>]\{-}>\<Bar></[tT][dD]></[tT][rR]>%@&@%g<CR>'yjma'zk:AlignCtrl m=Ilp1P0 @<CR>:'a,.Align<CR>:'y,'zs/ @/@/<CR>:'y,'zs/@ <[tT][rR]>/<[tT][rR]>/ge<CR>:'y,'zs/@//ge<CR>\WE
+" ---------------------------------------------------------------------
+" html table alignment	{{{1
+map <silent> <Leader>Htd <SID>WS:'y,'zs%<[tT][rR]><[tT][dD][^>]\{-}>\<Bar></[tT][dD]><[tT][dD][^>]\{-}>\<Bar></[tT][dD]></[tT][rR]>%@&@%g<CR>'yjma'zk:AlignCtrl m=Ilp1P0 @<CR>:'a,.Align<CR>:'y,'zs/ @/@/<CR>:'y,'zs/@ <[tT][rR]>/<[tT][rR]>/ge<CR>:'y,'zs/@//ge<CR><SID>WE
 
-" character-based right-justified alignment maps
-map <silent> <Leader>T| \WS:AlignCtrl mIp0P0=r <Bar><CR>:'a,.Align<CR>\WE
-map <silent> <Leader>T#   \WS:AlignCtrl mIp0P0=r #<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>T,   \WS:AlignCtrl mIp0P1=r ,<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>Ts,  \WS:AlignCtrl mIp0P1=r ,<CR>:'a,.Align<CR>:'a,.s/\(\s*\),/,\1/ge<CR>\WE
-map <silent> <Leader>T:   \WS:AlignCtrl mIp1P1=r :<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>T;   \WS:AlignCtrl mIp0P0=r ;<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>T<   \WS:AlignCtrl mIp0P0=r <<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>T=   \WS:'a,'z-1s/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'z-1s@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'z-1s/; */;@/e<CR>:'a,'z-1s/==/``/ge<CR>:'a,'z-1s/!=/!`/ge<CR>:AlignCtrl mIp1P1=r = @<CR>:AlignCtrl g =<CR>:'a,'z-1Align<CR>:'a,'z-1s/; *@/;/e<CR>:'a,'z-1s/; *$/;/e<CR>:'a,'z-1s@\([*/+\-%<Bar>&\~^]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1s/\( \+\);/;\1/ge<CR>:'a,'z-1s/`/=/ge<CR>\WE<Leader>acom
-map <silent> <Leader>T?   \WS:AlignCtrl mIp0P0=r ?<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR>\WE
-map <silent> <Leader>T@   \WS:AlignCtrl mIp0P0=r @<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>Tab  \WS:'a,.s/^\(\t*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\t','@','g'),'\')/<CR>:AlignCtrl mI=r @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR>\WE
-map <silent> <Leader>Tsp  \WS:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\s\+','@','g'),'\')/<CR>:AlignCtrl mI=r @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR>\WE
-map <silent> <Leader>T~   \WS:AlignCtrl mIp0P0=r ~<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR>\WE
+" ---------------------------------------------------------------------
+" character-based right-justified alignment maps {{{1
+map <silent> <Leader>T| <SID>WS:AlignCtrl mIp0P0=r <Bar><CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>T#   <SID>WS:AlignCtrl mIp0P0=r #<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>T,   <SID>WS:AlignCtrl mIp0P1=r ,<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>Ts,  <SID>WS:AlignCtrl mIp0P1=r ,<CR>:'a,.Align<CR>:'a,.s/\(\s*\),/,\1/ge<CR><SID>WE
+map <silent> <Leader>T:   <SID>WS:AlignCtrl mIp1P1=r :<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>T;   <SID>WS:AlignCtrl mIp0P0=r ;<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>T<   <SID>WS:AlignCtrl mIp0P0=r <<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>T=   <SID>WS:'a,'z-1s/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'z-1s@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'z-1s/; */;@/e<CR>:'a,'z-1s/==/\="\<Char-0xff>\<Char-0xff>"/ge<CR>:'a,'z-1s/!=/\x="!\<Char-0xff>"/ge<CR>:AlignCtrl mIp1P1=r = @<CR>:AlignCtrl g =<CR>:'a,'z-1Align<CR>:'a,'z-1s/; *@/;/e<CR>:'a,'z-1s/; *$/;/e<CR>:'a,'z-1s@\([*/+\-%<Bar>&\~^]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1s/\( \+\);/;\1/ge<CR>:'a,'z-1s/\xff/=/ge<CR><SID>WE<Leader>acom
+map <silent> <Leader>T?   <SID>WS:AlignCtrl mIp0P0=r ?<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR><SID>WE
+map <silent> <Leader>T@   <SID>WS:AlignCtrl mIp0P0=r @<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>Tab  <SID>WS:'a,.s/^\(\t*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\t','@','g'),'\')/<CR>:AlignCtrl mI=r @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR><SID>WE
+map <silent> <Leader>Tsp  <SID>WS:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\s\+','@','g'),'\')/<CR>:AlignCtrl mI=r @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR><SID>WE
+map <silent> <Leader>T~   <SID>WS:AlignCtrl mIp0P0=r ~<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR><SID>WE
 
-" character-based left-justified alignment maps
-map <silent> <Leader>t| \WS:AlignCtrl mIp0P0=l <Bar><CR>:'a,.Align<CR>\WE
-map <silent> <Leader>t#   \WS:AlignCtrl mIp0P0=l #<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>t,   \WS:AlignCtrl mIp0P1=l ,<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>ts,  \WS:AlignCtrl mIp0P0=l ,<CR>:'a,.Align<CR>:'a,.s/\(\s*\),/,\1/ge<CR>\WE
-map <silent> <Leader>t:   \WS:AlignCtrl mIp1P1=l :<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>t;   \WS:AlignCtrl mIp0P0=l ;<CR>:'a,.Align<CR>:.,'zs/ \( *\);/;\1/ge<CR>\WE
-map <silent> <Leader>t<   \WS:AlignCtrl mIp0P0=l <<CR>:'a,.Align<CR>\WE
+" ---------------------------------------------------------------------
+" character-based left-justified alignment maps {{{1
+map <silent> <Leader>t| <SID>WS:AlignCtrl mIp0P0=l <Bar><CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>t#   <SID>WS:AlignCtrl mIp0P0=l #<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>t,   <SID>WS:AlignCtrl mIp0P1=l ,<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>ts,  <SID>WS:AlignCtrl mIp0P1=l ,<CR>:'a,.Align<CR>:'a,.s/\(\s*\),/,\1/ge<CR><SID>WE
+map <silent> <Leader>t:   <SID>WS:AlignCtrl mIp1P1=l :<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>t;   <SID>WS:AlignCtrl mIp0P0=l ;<CR>:'a,.Align<CR>:.,'zs/ \( *\);/;\1/ge<CR><SID>WE
+map <silent> <Leader>t<   <SID>WS:AlignCtrl mIp0P0=l <<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>t=   <SID>WS:'a,'zs/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'zs@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'zs/==/\="\<Char-0xff>\<Char-0xff>"/ge<CR>:'a,'zs/!=/\="!\<Char-0xff>"/ge<CR>'zk:AlignCtrl mIp1P1=l =<CR>:AlignCtrl g =<CR>:'a,'z-1Align<CR>:'a,'z-1s@\([*/+\-%<Bar>&\~^!=]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1s/\( \+\);/;\1/ge<CR>:'a,'z-1v/^\s*\/[*/]/s/\/[*/]/@&@/e<CR>:'a,'z-1v/^\s*\/[*/]/s/\*\//@&/e<CR>'zk<Leader>t@:'y,'zs/^\(\s*\) @/\1/e<CR>:'a,'z-1s/\xff/=/ge<CR>:'y,'zs/ @//eg<CR><SID>WE
+map <silent> <Leader>w=   <SID>WS:'a,'zg/=/s/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'zg/=/s@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'zg/=/s/==/\="\<Char-0xff>\<Char-0xff>"/ge<CR>:'a,'zg/=/s/!=/\="!\<Char-0xff>"/ge<CR>'zk:AlignCtrl mWp1P1=l =<CR>:AlignCtrl g =<CR>:'a,'z-1g/=/Align<CR>:'a,'z-1g/=/s@\([*/+\-%<Bar>&\~^!=]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1g/=/s/\( \+\);/;\1/ge<CR>:'a,'z-1v/^\s*\/[*/]/s/\/[*/]/@&@/e<CR>:'a,'z-1v/^\s*\/[*/]/s/\*\//@&/e<CR>'zk<Leader>t@:'y,'zs/^\(\s*\) @/\1/e<CR>:'a,'z-1g/=/s/\xff/=/ge<CR>:'y,'zg/=/s/ @//eg<CR><SID>WE
+map <silent> <Leader>t?   <SID>WS:AlignCtrl mIp0P0=l ?<CR>:'a,.Align<CR>:.,'zs/ \( *\);/;\1/ge<CR><SID>WE
+map <silent> <Leader>t~   <SID>WS:AlignCtrl mIp0P0=l ~<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR><SID>WE
+map <silent> <Leader>m=   <SID>WS:'a,'zs/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'zs@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'zs/==/\="\<Char-0xff>\<Char-0xff>"/ge<CR>:'a,'zs/!=/\="!\<Char-0xff>"/ge<CR>'zk:AlignCtrl mIp1P1=l =<CR>:AlignCtrl g =<CR>:'a,'z-1Align<CR>:'a,'z-1s@\([*/+\-%<Bar>&\~^!=]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1s/\( \+\);/;\1/ge<CR>:'a,'z-s/%\ze[^=]/ @%@ /e<CR>'zk<Leader>t@:'y,'zs/^\(\s*\) @/\1/e<CR>:'a,'z-1s/\xff/=/ge<CR>:'y,'zs/ @//eg<CR><SID>WE
+map <silent> <Leader>tab  <SID>WS:'a,.s/^\(\t*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\t','@','g'),'\')/<CR>:AlignCtrl mI=l @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR><SID>WE
+map <silent> <Leader>tml  <SID>WS:AlignCtrl mWp1P0=l \\\@<!\\\s*$<CR>:'a,.Align<CR><SID>WE
+map <silent> <Leader>tsp  <SID>WS:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\s\+','@','g'),'\')/<CR>:AlignCtrl mI=lp0P0 @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR><SID>WE
+map <silent> <Leader>tsq  <SID>WS:'a,.AlignReplaceQuotedSpaces<CR>:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).substitute(submatch(2),'\s\+','@','g')/<CR>:AlignCtrl mIp0P0=l @<CR>:'a,.Align<CR>:'y+1,'z-1s/[%@]/ /g<CR><SID>WE
+map <silent> <Leader>tt   <SID>WS:AlignCtrl mIp1P1=l \\\@<!& \\\\<CR>:'a,.Align<CR><SID>WE
 
-map <silent> <Leader>t=   \WS:'a,'zs/\s\+\([*/+\-%<Bar>&\~^]\==\)/ \1/e<CR>:'a,'zs@ \+\([*/+\-%<Bar>&\~^]\)=@\1=@ge<CR>:'a,'zs/==/``/ge<CR>:'a,'zs/!=/!`/ge<CR>'zk:AlignCtrl mIp1P1=l =<CR>:AlignCtrl g =<CR>:'a,'z-1Align<CR>:'a,'z-1s@\([*/+\-%<Bar>&\~^!=]\)\( \+\)=@\2\1=@ge<CR>:'a,'z-1s/\( \+\);/;\1/ge<CR>:'a,'z-1v/^\s*\/[*/]/s/\/[*/]/@&@/e<CR>:'a,'z-1v/^\s*\/[*/]/s/\*\//@&/e<CR>'zk<Leader>t@:'y,'zs/^\(\s*\) @/\1/e<CR>:'a,'z-1s/`/=/ge<CR>:'y,'zs/ @//eg<CR>\WE
-map <silent> <Leader>t?   \WS:AlignCtrl mIp0P0=l ?<CR>:'a,.Align<CR>:.,'zs/ \( *\);/;\1/ge<CR>\WE
-map <silent> <Leader>tab  \WS:'a,.s/^\(\t*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\t','@','g'),'\')/<CR>:AlignCtrl mI=l @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR>\WE
-map <silent> <Leader>tsp  \WS:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).escape(substitute(submatch(2),'\s\+','@','g'),'\')/<CR>:AlignCtrl mI=l @<CR>:'a,.Align<CR>:'y+1,'z-1s/@/ /g<CR>\WE
-map <silent> <Leader>tsq  \WS:'a,.ReplaceQuotedSpaces<CR>:'a,.s/^\(\s*\)\(.*\)/\=submatch(1).substitute(submatch(2),'\s\+','@','g')/<CR>:AlignCtrl mIp0P0=l @<CR>:'a,.Align<CR>:'y+1,'z-1s/[%@]/ /g<CR>\WE
-map <silent> <Leader>tt   \WS:AlignCtrl mIp1P1=l \\\@<!& \\\\<CR>:'a,.Align<CR>\WE
-map <silent> <Leader>t~   \WS:AlignCtrl mIp0P0=l ~<CR>:'a,.Align<CR>:'y,'zs/ \( *\);/;\1/ge<CR>\WE
-
-" plain Align maps; these two are used in <Leader>acom..\afnc
+" ---------------------------------------------------------------------
+" plain Align maps; these two are used in <Leader>acom..\afnc	{{{1
 map <silent> <Leader>t@   :AlignCtrl mIp1P1=l @<CR>:'a,.Align<CR>
 map <silent> <Leader>tW@  :AlignCtrl mWp1P1=l @<CR>:'a,.Align<CR>
+map <silent> <Leader>tdW@ :AlignCtrl v ^\s*/[/*]<CR>:AlignCtrl mWp1P1=l @<CR>:'a,.Align<CR>
 
-" Joiner
+" ---------------------------------------------------------------------
+" Joiner : maps used above	{{{1
 map <silent> <Leader>jnr=  :call <SID>CharJoiner("=")<CR>
 map <silent> <Leader>jnr,  :call <SID>CharJoiner(",")<CR>
 
-" visual-line mode variants
+" ---------------------------------------------------------------------
+" visual-line mode variants: {{{1
 vmap <silent> <Leader>T|	:<BS><BS><BS><CR>ma'><Leader>T|
 vmap <silent> <Leader>T,	:<BS><BS><BS><CR>ma'><Leader>T,
 vmap <silent> <Leader>Ts,	:<BS><BS><BS><CR>ma'><Leader>Ts,
@@ -149,8 +228,11 @@ vmap <silent> <Leader>T@	:<BS><BS><BS><CR>ma'><Leader>T@
 vmap <silent> <Leader>Tsp	:<BS><BS><BS><CR>ma'><Leader>Tsp
 vmap <silent> <Leader>a?	:<BS><BS><BS><CR>ma'><Leader>a?
 vmap <silent> <Leader>a,	:<BS><BS><BS><CR>ma'><Leader>a,
+vmap <silent> <Leader>a<	:<BS><BS><BS><CR>ma'><Leader>a<
+vmap <silent> <Leader>a=	:<BS><BS><BS><CR>ma'><Leader>a=
 vmap <silent> <Leader>abox	:<BS><BS><BS><CR>ma'><Leader>abox
 vmap <silent> <Leader>acom	:<BS><BS><BS><CR>ma'><Leader>acom
+vmap <silent> <Leader>aocom	:<BS><BS><BS><CR>ma'><Leader>aocom
 vmap <silent> <Leader>ascom	:<BS><BS><BS><CR>ma'><Leader>ascom
 vmap <silent> <Leader>adec	:<BS><BS><BS><CR>ma'><Leader>adec
 vmap <silent> <Leader>adef	:<BS><BS><BS><CR>ma'><Leader>adef
@@ -166,6 +248,7 @@ vmap <silent> <Leader>t=	:<BS><BS><BS><CR>ma'><Leader>t=
 vmap <silent> <Leader>t?	:<BS><BS><BS><CR>ma'><Leader>t?
 vmap <silent> <Leader>t@	:<BS><BS><BS><CR>ma'><Leader>t@
 vmap <silent> <Leader>tab	:<BS><BS><BS><CR>ma'><Leader>tab
+vmap <silent> <Leader>tml	:<BS><BS><BS><CR>ma'><Leader>tml
 vmap <silent> <Leader>tsp	:<BS><BS><BS><CR>ma'><Leader>tsp
 vmap <silent> <Leader>tsq	:<BS><BS><BS><CR>ma'><Leader>tsq
 vmap <silent> <Leader>tp@	:<BS><BS><BS><CR>ma'><Leader>tp@
@@ -174,10 +257,10 @@ vmap <silent> <Leader>Htd	:<BS><BS><BS><CR>ma'><Leader>Htd
 vmap <silent> <Leader>anum  :B s/\(\d\)\s\+\(-\=[.,]\=\d\)/\1@\2/ge<CR>:AlignCtrl mp0P0<CR>gv:Align [.,@]<CR>:'<,'>s/\([-0-9.,]*\)\(\s\+\)\([.,]\)/\2\1\3/ge<CR>:'<,'>s/@/ /ge<CR>
 
 " ---------------------------------------------------------------------
-
-" CharJoiner: joins lines which end in the given character (spaces
+" CharJoiner: joins lines which end in the given character (spaces {{{1
 "             at end are ignored)
 fun! <SID>CharJoiner(chr)
+"  call Dfunc("CharJoiner(chr=".a:chr.")")
   let aline = line("'a")
   let rep   = line(".") - aline
   while rep > 0
@@ -198,13 +281,15 @@ fun! <SID>CharJoiner(chr)
   	norm! jma
   	let aline = line("'a")
   endwhile
+"  call Dret("CharJoiner")
 endfun
 
 " ---------------------------------------------------------------------
-
-" Afnc: useful for splitting one-line function beginnings
+" Afnc: useful for splitting one-line function beginnings {{{1
 "            into one line per argument format
-fu! <SID>Afnc()
+fun! <SID>Afnc()
+"  call Dfunc("Afnc()")
+
   " keep display quiet
   let chkeep = &ch
   let gdkeep = &gd
@@ -212,8 +297,8 @@ fu! <SID>Afnc()
   set ch=2 nogd ve=
 
   " will use marks y,z ; save current values
-  let mykeep = s:GetMark("'y")
-  let mzkeep = s:GetMark("'z")
+  let mykeep = SaveMark("'y")
+  let mzkeep = SaveMark("'z")
 
   " Find beginning of function -- be careful to skip over comments
   let cmmntid  = synIDtrans(hlID("Comment"))
@@ -285,7 +370,7 @@ fu! <SID>Afnc()
   sil! 'y+1,'zv/^\//s/\* \+/*/ge
   "                                                 func
   "                    ws  <- declaration   ->    <-ptr  ->   <-var->    <-[array][]    ->   <-glop->      <-end->
-  sil! 'y+1,'zv/^\//s/^\s*\(\(\w\+\s*\)\+\)\s\+\([(*]*\)\s*\(\w\+\)\s*\(\(\[.\{-}]\)*\)\s*\(.\{-}\)\=\s*\([,)]\)\s*$/  \1@#\3@\4\5@\7\8/e
+  sil! 'y+1,'zv/^\//s/^\s*\(\(\K\k*\s*\)\+\)\s\+\([(*]*\)\s*\(\K\k*\)\s*\(\(\[.\{-}]\)*\)\s*\(.\{-}\)\=\s*\([,)]\)\s*$/  \1@#\3@\4\5@\7\8/e
   sil! 'y+1,'z+1g/^\s*\/[*/]/norm! kJ
   sil! 'y+1,'z+1s%/[*/]%@&@%ge
   sil! 'y+1,'z+1s%*/%@&%ge
@@ -302,56 +387,39 @@ fu! <SID>Afnc()
   sil! 'y+1,'zs/\(\s\+\)\([,)]\)/\2\1/e
 
   " Restore
-  call s:PutMark(mykeep)
-  call s:PutMark(mzkeep)
+  call RestoreMark(mykeep)
+  call RestoreMark(mzkeep)
   let &ch= chkeep
   let &gd= gdkeep
   let &ve= vekeep
-endfunction
+
+"  call Dret("Afnc")
+endfun
 
 " ---------------------------------------------------------------------
+"  FixMultiDec: converts a   type arg,arg,arg;   line to multiple lines {{{1
+fun! s:FixMultiDec()
+"  call Dfunc("FixMultiDec()")
 
-" GetPosn: gets a string describing current position
-fu! s:GetPosn()
-  let curline = line(".")
-  let curcol  = virtcol(".")
-  norm! H
-  let curhline= line(".")
-  exe "norm! ".curhline."G0z\<CR>".curline.'G'.curcol.'|'
-  return curhline.":".curline.".".curcol
-endfunction
+  " save register x
+  let xkeep   = @x
+  let curline = getline(".")
+"  call Decho("curline<".curline.">")
 
-" ---------------------------------------------------------------------
+  " Get the type.  I'm assuming one type per line (ie.  int x; double y;   on one line will not be handled properly)
+  let @x=substitute(curline,'^\(\s*[a-zA-Z_ \t][a-zA-Z0-9_ \t]*\)\s\+[(*]*\h.*$','\1','')
+"  call Decho("@x<".@x.">")
 
-fu! s:PutPosn(posnvar)
-  let gotohline = substitute(a:posnvar,'^\(\d\+\):\(\d\+\)\.\(\d\+\)','\1','')
-  let gotoline  = substitute(a:posnvar,'^\(\d\+\):\(\d\+\)\.\(\d\+\)','\2','')
-  let gotocol   = substitute(a:posnvar,'^\(\d\+\):\(\d\+\)\.\(\d\+\)','\3','')
-  exe "norm! ".gotohline."G0z\<CR>".gotoline.'G'.gotocol.'|'
-endfunction
+  " transform line
+  exe 's/,/;\r'.@x.' /ge'
 
-" ---------------------------------------------------------------------
+  "restore register x
+  let @x= xkeep
 
-" GetMark: gets a string describing the mark
-fu! s:GetMark(markname)
-  return strpart(a:markname,1,1).':'.line(a:markname).'.'.virtcol(a:markname)
-endfunction
+"  call Dret("FixMultiDec : my=".line("'y")." mz=".line("'z"))
+endfun
 
-" ---------------------------------------------------------------------
-
-" PutMark: puts a mark back based on the string describing it
-fu! s:PutMark(markvar)
-  let markname= substitute(a:markvar,'^\(.*\)\(:.*\)\(\..*\)$','\1','')
-  let markline= substitute(a:markvar,'^\(.*:\)\(.*\)\(\..*\)$','\2','')
-  let markcol = substitute(a:markvar,'^\(.*:\)\(.*\.\)\(.*\)$','\3','')
-  if markline != 0 || markcol != 0
-   let curline = line(".")
-   let curcol  = virtcol(".")
-   exe "norm! ".markline.'G'.markcol.'|m'.markname
-   exe "norm! ".curline.'G'.curcol.'|'
-  endif
-endfunction
-
-" ---------------------------------------------------------------------
-
-" vim: ts=4 nowrap
+let &cpo= s:keepcpo
+unlet s:keepcpo
+" ------------------------------------------------------------------------------
+" vim: ts=4 nowrap fdm=marker
