@@ -35,11 +35,9 @@ if has("gui_running")
 endif
 
 " FILETYPE-SPECIFIC SETTINGS
-if version< 600
-  source <sfile>.less_than_v6
-else
-  source <sfile>.v6_and_up
-endif
+filetype plugin indent on
+" filetype for Supermemo Databases:
+au BufRead,BufNewFile *.smd		setfiletype smd
 
 source <sfile>.handling_gzip
 source <sfile>.tip343_large_files
