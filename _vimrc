@@ -66,6 +66,8 @@ augroup gzip
   autocmd FileAppendPost		*.gz !gzip <afile>:r
 augroup END
 
+source <sfile>.tip343_large_files
+
 " -----
 " The indentation mappings below are taken from VimTip 112.
 "
