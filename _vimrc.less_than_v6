@@ -8,43 +8,18 @@ au BufNewFile *.tex 3
 au BufEnter *.tex so ~/.vim/latex_in.vim
 au BufLeave *.tex so ~/.vim/latex_out.vim
 
-au BufNewFile *.cpp 0r ~/.vim/c.skeleton
-au BufNewFile *.cpp :15
-au BufNewFile *.cpp :r!date +"\%d/\%m/\%y \%H:\%M"
-au BufNewFile *.cpp :15:j
-au BufNewFile *.cpp :15
 au BufEnter *.cpp so ~/.vim/c_in.vim
 au BufLeave *.cpp so ~/.vim/c_out.vim
 
-au BufNewFile *.C 0r ~/.vim/c.skeleton
-au BufNewFile *.C :15
-au BufNewFile *.C :r!date +"\%d/\%m/\%y \%H:\%M"
-au BufNewFile *.C :15:j
-au BufNewFile *.C :15
 au BufEnter *.C so ~/.vim/c_in.vim
 au BufLeave *.C so ~/.vim/c_out.vim
 
-au BufNewFile *.H 0r ~/.vim/c.skeleton
-au BufNewFile *.H :15
-au BufNewFile *.H :r!date +"\%d/\%m/\%y \%H:\%M"
-au BufNewFile *.H :15:j
-au BufNewFile *.H :15
 au BufEnter *.H so ~/.vim/c_in.vim
 au BufLeave *.H so ~/.vim/c_out.vim
 
-au BufNewFile *.cc 0r ~/.vim/c.skeleton
-au BufNewFile *.cc :15
-au BufNewFile *.cc :r!date +"\%d/\%m/\%y \%H:\%M"
-au BufNewFile *.cc :15:j
-au BufNewFile *.cc :15
 au BufEnter *.cc so ~/.vim/c_in.vim
 au BufLeave *.cc so ~/.vim/c_out.vim
 
-au BufNewFile *.c 0r ~/.vim/c.skeleton
-au BufNewFile *.c :15
-au BufNewFile *.c :r!date +"\%d/\%m/\%y \%H:\%M"
-au BufNewFile *.c :15:j
-au BufNewFile *.c :15
 au BufEnter *.c so ~/.vim/c_in.vim
 au BufLeave *.c so ~/.vim/c_out.vim
 
@@ -56,7 +31,6 @@ au BufNewFile *.ksh :2
 au BufEnter *.ksh so ~/.vim/ksh_in.vim
 au BufLeave *.ksh so ~/.vim/ksh_out.vim
 
-au BufNewFile *Tester.java 0r ~/.vim/javatest.skeleton
 "|1,$s/<ClassName>/<ClassName>/ |?^package
 au BufNewFile *.java 0r ~/.vim/java.skeleton
 au BufEnter *.java so ~/.vim/java_in.vim

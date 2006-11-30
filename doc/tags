@@ -68,17 +68,6 @@
 :rails-:RT	rails.txt	/*:rails-:RT*
 AND	dbext.txt	/*AND*
 Align-copyright	Align.txt	/*Align-copyright*
-EnhComm-Bugs	EnhancedCommentify.txt	/*EnhComm-Bugs*
-EnhComm-Credits	EnhancedCommentify.txt	/*EnhComm-Credits*
-EnhComm-EnhCommentify	EnhancedCommentify.txt	/*EnhComm-EnhCommentify*
-EnhComm-Fallbacks	EnhancedCommentify.txt	/*EnhComm-Fallbacks*
-EnhComm-Keybindings	EnhancedCommentify.txt	/*EnhComm-Keybindings*
-EnhComm-NewLanguages	EnhancedCommentify.txt	/*EnhComm-NewLanguages*
-EnhComm-Options	EnhancedCommentify.txt	/*EnhComm-Options*
-EnhComm-Support	EnhancedCommentify.txt	/*EnhComm-Support*
-EnhancedCommentify	EnhancedCommentify.txt	/*EnhancedCommentify*
-EnhancedCommentify()	EnhancedCommentify.txt	/*EnhancedCommentify()*
-EnhancedCommentify.txt	EnhancedCommentify.txt	/*EnhancedCommentify.txt*
 GetLatestVimScripts	pi_getscript.txt	/*GetLatestVimScripts*
 GetLatestVimScripts-copyright	pi_getscript.txt	/*GetLatestVimScripts-copyright*
 MatchError	matchit.txt	/*MatchError*
