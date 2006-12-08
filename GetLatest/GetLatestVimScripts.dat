@@ -2,7 +2,7 @@ ScriptID SourceID Filename
 --------------------------
 294 6210 Align.vim
 102 5306 DirDiff.vim
-356 6221 dbext.vim
+356 6499 dbext.vim
 1567 6365 rails.vim
 642 6277 GetLatestVimScripts.vim
 489 5882 Manpageview.vim
