@@ -1,5 +1,3 @@
-source `=expand("<sfile>").".".hostname()`
-
 " GENERAL SETTINGS
 set nohlsearch
 set visualbell
@@ -42,3 +40,5 @@ au BufRead,BufNewFile *.smd		setfiletype smd
 source <sfile>.handling_gzip
 source <sfile>.tip343_large_files
 source <sfile>.tip112_indentation_helper
+
+source `=expand("<sfile>").".".hostname()`
