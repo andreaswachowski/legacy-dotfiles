@@ -321,16 +321,18 @@ com! CVSWatchers call s:CVSWatchers()
 " Section: Plugin command mappings {{{1
 
 let s:cvsExtensionMappings = {}
-let mappingInfo = [
-      \['CVSEdit', 'CVSEdit', 'ce'],
-      \['CVSEditors', 'CVSEditors', 'ci'],
-      \['CVSUnedit', 'CVSUnedit', 'ct'],
-      \['CVSWatchers', 'CVSWatchers', 'cwv'],
-      \['CVSWatchAdd', 'CVSWatch add', 'cwa'],
-      \['CVSWatchOff', 'CVSWatch off', 'cwf'],
-      \['CVSWatchOn', 'CVSWatch on', 'cwn'],
-      \['CVSWatchRemove', 'CVSWatch remove', 'cwr']
-      \]
+"let mappingInfo = [
+"      \['CVSEdit', 'CVSEdit', 'ce'],
+"      \['CVSEditors', 'CVSEditors', 'ci'],
+"      \['CVSUnedit', 'CVSUnedit', 'ct'],
+"      \['CVSWatchers', 'CVSWatchers', 'cwv'],
+"      \['CVSWatchAdd', 'CVSWatch add', 'cwa'],
+"      \['CVSWatchOff', 'CVSWatch off', 'cwf'],
+"      \['CVSWatchOn', 'CVSWatch on', 'cwn'],
+"      \['CVSWatchRemove', 'CVSWatch remove', 'cwr']
+"      \]
+
+let mappingInfo = [ ['CVSEdit', 'CVSEdit', 'ce'], ['CVSEditors', 'CVSEditors', 'ci'], ['CVSUnedit', 'CVSUnedit', 'ct'], ['CVSWatchers', 'CVSWatchers', 'cwv'], ['CVSWatchAdd', 'CVSWatch add', 'cwa'], ['CVSWatchOff', 'CVSWatch off', 'cwf'], ['CVSWatchOn', 'CVSWatch on', 'cwn'], ['CVSWatchRemove', 'CVSWatch remove', 'cwr'] ]
 
 for [pluginName, commandText, shortCut] in mappingInfo
   execute 'nnoremap <silent> <Plug>' . pluginName . ' :' . commandText . '<CR>'
