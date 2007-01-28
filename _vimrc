@@ -41,4 +41,29 @@ source <sfile>.handling_gzip
 source <sfile>.tip343_large_files
 source <sfile>.tip112_indentation_helper
 
-source `=expand("<sfile>").".".hostname()`
+" -- OS-specific settings -------------------------------------------------
+let s:os = "unknown"
+if has("unix")
+  let s:os="unix"
+elseif has("win32")
+  let s:os="win32"
+elseif has("macunix")
+  let s:os="macunix"
+" else nothing specific to be done.
+endif
+if s:os != "unknown"
+  let s:os_specific_setup = expand("<sfile>").".os.".s:os
+  echo s:os_specific_setup
+  if findfile(s:os_specific_setup,"<sfile>:%h") != ""
+    source `=expand(s:os_specific_setup)`
+  endif
+  unlet s:os_specific_setup
+endif
+unlet s:os
+
+" -- host-specific settings -----------------------------------------------
+let s:host_specific_setup = expand("<sfile>").".".hostname()
+if findfile(s:host_specific_setup,"<sfile>:%h") != ""
+  source `=expand("<sfile>").".host.".hostname()`
+endif
+unlet s:host_specific_setup
