@@ -43,12 +43,12 @@ source <sfile>.tip112_indentation_helper
 
 " -- OS-specific settings -------------------------------------------------
 let s:os = "unknown"
-if has("unix")
+if has("mac")
+  let s:os="mac"
+elseif has("unix")
   let s:os="unix"
 elseif has("win32")
   let s:os="win32"
-elseif has("macunix")
-  let s:os="macunix"
 " else nothing specific to be done.
 endif
 if s:os != "unknown"
@@ -62,8 +62,8 @@ endif
 unlet s:os
 
 " -- host-specific settings -----------------------------------------------
-let s:host_specific_setup = expand("<sfile>").".".hostname()
+let s:host_specific_setup = expand("<sfile>").".host.".hostname()
 if findfile(s:host_specific_setup,"<sfile>:%h") != ""
-  source `=expand("<sfile>").".host.".hostname()`
+  source `=expand(s:host_specific_setup)`
 endif
 unlet s:host_specific_setup

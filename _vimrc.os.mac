@@ -1,0 +1,2 @@
+" On Mac, this works best:
+set nomacatsui anti tenc=macroman gfn=Monaco:h13
