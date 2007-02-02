@@ -53,7 +53,6 @@ elseif has("win32")
 endif
 if s:os != "unknown"
   let s:os_specific_setup = expand("<sfile>").".os.".s:os
-  echo s:os_specific_setup
   if findfile(s:os_specific_setup,"<sfile>:%h") != ""
     source `=expand(s:os_specific_setup)`
   endif
