@@ -1,2 +1,4 @@
-" As of konsole 1.6.4 (KDE 3.5.4), 256 colors are supported.
-set t_Co=256
+if has("gui_running")
+  set lines=45
+  set columns=80
+end

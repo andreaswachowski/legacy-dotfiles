@@ -1,21 +1,23 @@
-" GENERAL SETTINGS
+" -- General settings -----------------------------------------------------
+let s:host_specific_pre_setup = expand("<sfile>").".host.pre.".hostname()
+if findfile(s:host_specific_pre_setup,"<sfile>:%h") != ""
+  source `=expand(s:host_specific_pre_setup)`
+endif
+unlet s:host_specific_pre_setup
+
 set nohlsearch
 set visualbell
 set autoindent
 set incsearch
 set sidescroll=1
-set exrc
-set winminheight=0
+" FIXME:exrc is not necessary if I am in $HOME/.vim
+" Then, the whole configuration will be sourced twice.
+set exrc " enable reading of local .vimrc and .exrc files
+set winminheight=0 " minimize a window to just its status bar
 set textwidth=75
-"set laststatus=2
 set statusline=%f%m%=%l
-runtime ftplugin/man.vim
+filetype plugin indent on
 
-:nmap <F2> :wa<Bar>exe "mksession! " . v:this_session<CR>:1,$bd<CR>:so ~/.vim/sessions/
-
-" The CTRL-] does not work for some reason or another, but I still want
-" to jump to topics using the keyboard:
-" map <M-9> <C-]>
 if &t_Co > 2 || has("gui_running")
   syntax on
   highlight Statement ctermfg=1
@@ -24,16 +26,12 @@ if &t_Co >= 256 || has("gui_running")
   colorscheme default256
 endif
 if has("gui_running")
-  set guioptions-=m
-  set guioptions-=T
-"  set guifont=CMTT8:h12:cSYMBOL
-"  set guifont="SUSE Sans Mono 10"
-  set lines=45
-  set columns=80
+  set guioptions-=m " remove menu bar
+  set guioptions-=T " remove tool bar
 endif
 
-" FILETYPE-SPECIFIC SETTINGS
-filetype plugin indent on
+highlight Visual term=reverse ctermbg=White guibg=White
+
 " filetype for Supermemo Databases:
 au BufRead,BufNewFile *.smd		setfiletype smd
 
