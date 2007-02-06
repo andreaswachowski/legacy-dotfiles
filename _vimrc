@@ -16,6 +16,7 @@ set exrc " enable reading of local .vimrc and .exrc files
 set winminheight=0 " minimize a window to just its status bar
 set textwidth=75
 set statusline=%f%m%=%l
+let g:netrw_alto = 1 " split below the file browser
 filetype plugin indent on
 
 if &t_Co > 2 || has("gui_running")
