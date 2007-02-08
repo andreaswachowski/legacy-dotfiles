@@ -2,8 +2,8 @@ ScriptID SourceID Filename
 --------------------------
 294 6210 Align.vim
 102 5306 DirDiff.vim
-356 6499 dbext.vim
-1567 6365 rails.vim
+356 6527 dbext.vim
+1567 6683 rails.vim
 642 6277 GetLatestVimScripts.vim
 489 5882 Manpageview.vim
 39 6332 matchit.vim
@@ -11,5 +11,6 @@ ScriptID SourceID Filename
 90 6368 vcscommand.vim
 1066 6205 :AutoInstall: cecutil.vim
 489 5882 :AutoInstall: manpageview.vim
-1075 6180 :AutoInstall: netrw.vim
-1502 6120 :AutoInstall: vimball.vim
+1075 6577 :AutoInstall: netrw.vim
+1502 6578 :AutoInstall: vimball.vim
+1697 6411 :AutoInstall: surround.vim
