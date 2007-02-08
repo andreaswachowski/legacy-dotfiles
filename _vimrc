@@ -31,7 +31,6 @@ if has("gui_running")
   set guioptions-=T " remove tool bar
 endif
 
-let g:VCSCommandDeleteOnHide = 1
 highlight Visual term=reverse ctermbg=White guibg=White
 
 " filetype for Supermemo Databases:
