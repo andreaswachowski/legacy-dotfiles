@@ -956,10 +956,12 @@ function! s:Project(filename) " <<<
             if v:shell_error != 0
                 echo 'GREP error. Perhaps there are too many filenames.'
             else
+                call s:DoToggleProject()
                 copen
             endif
         else
             silent! exec 'silent! vimgrep '.pattern.' '.fnames
+            call s:DoToggleProject()
             copen
         endif
     endfunction ">>>

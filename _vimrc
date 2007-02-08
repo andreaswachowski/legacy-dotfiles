@@ -19,6 +19,8 @@ set statusline=%f%m%=%l
 let g:netrw_alto = 1 " split below the file browser
 filetype plugin indent on
 
+au BufReadPost quickfix  set nowrap
+
 if &t_Co > 2 || has("gui_running")
   syntax on
   highlight Statement ctermfg=1
