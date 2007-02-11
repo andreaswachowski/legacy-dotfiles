@@ -16,6 +16,13 @@ set exrc " enable reading of local .vimrc and .exrc files
 set winminheight=0 " minimize a window to just its status bar
 set textwidth=75
 set statusline=%f%m%=%l
+
+" Vim Tip 173: Quick movement between split windows
+nmap <c-l> <c-w>l
+nmap <c-h> <c-w>h
+nmap <c-k> <c-w>k
+nmap <c-j> <c-w>j
+
 let g:netrw_alto = 1 " split below the file browser
 filetype plugin indent on
 
