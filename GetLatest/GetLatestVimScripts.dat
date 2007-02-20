@@ -8,9 +8,9 @@ ScriptID SourceID Filename
 489 5882 Manpageview.vim
 39 6332 matchit.vim
 273 6416 taglist.vim
-90 6368 vcscommand.vim
+90 6761 vcscommand.vim
 1066 6205 :AutoInstall: cecutil.vim
 489 5882 :AutoInstall: manpageview.vim
 1075 6577 :AutoInstall: netrw.vim
 1502 6578 :AutoInstall: vimball.vim
-1697 6411 :AutoInstall: surround.vim
+1697 6747 :AutoInstall: surround.vim
