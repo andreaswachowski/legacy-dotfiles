@@ -62,6 +62,7 @@
 :VCSAdd	vcscommand.txt	/*:VCSAdd*
 :VCSAnnotate	vcscommand.txt	/*:VCSAnnotate*
 :VCSCommit	vcscommand.txt	/*:VCSCommit*
+:VCSDelete	vcscommand.txt	/*:VCSDelete*
 :VCSDiff	vcscommand.txt	/*:VCSDiff*
 :VCSGotoOriginal	vcscommand.txt	/*:VCSGotoOriginal*
 :VCSLock	vcscommand.txt	/*:VCSLock*
@@ -97,6 +98,7 @@ VCSCommandEdit	vcscommand.txt	/*VCSCommandEdit*
 VCSCommandEnableBufferSetup	vcscommand.txt	/*VCSCommandEnableBufferSetup*
 VCSCommandResultBufferNameExtension	vcscommand.txt	/*VCSCommandResultBufferNameExtension*
 VCSCommandResultBufferNameFunction	vcscommand.txt	/*VCSCommandResultBufferNameFunction*
+VCSCommandSVNDiffExt	vcscommand.txt	/*VCSCommandSVNDiffExt*
 VCSCommandSVNDiffOpt	vcscommand.txt	/*VCSCommandSVNDiffOpt*
 VCSCommandSVNExec	vcscommand.txt	/*VCSCommandSVNExec*
 VCSCommandSplit	vcscommand.txt	/*VCSCommandSplit*
@@ -671,7 +673,6 @@ vcscommand-ssh-env	vcscommand.txt	/*vcscommand-ssh-env*
 vcscommand-ssh-other	vcscommand.txt	/*vcscommand-ssh-other*
 vcscommand-ssh-wrapper	vcscommand.txt	/*vcscommand-ssh-wrapper*
 vcscommand-statusline	vcscommand.txt	/*vcscommand-statusline*
-vcscommand-tips	vcscommand.txt	/*vcscommand-tips*
 vcscommand.txt	vcscommand.txt	/*vcscommand.txt*
 vimball	pi_vimball.txt	/*vimball*
 vimball-contents	pi_vimball.txt	/*vimball-contents*
