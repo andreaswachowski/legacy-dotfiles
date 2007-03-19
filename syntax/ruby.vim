@@ -244,7 +244,7 @@ if version >= 508 || !exists("did_ruby_syntax_inits")
     let did_ruby_syntax_inits = 1
     command -nargs=+ HiLink hi link <args>
   else
-    command -nargs=+ HiLink hi def link <args>
+    command! -nargs=+ HiLink hi def link <args>
   endif
 
   HiLink rubyDefine			Define
