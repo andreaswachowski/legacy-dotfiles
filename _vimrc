@@ -5,6 +5,22 @@ if findfile(s:host_specific_pre_setup,"<sfile>:%h") != ""
 endif
 unlet s:host_specific_pre_setup
 
+if &term =~ "dtterm"
+  set t_Co=256
+elseif &term =~ "xterm"
+  set t_Co=8
+endif
+
+if &term =~ "dtterm" || &term =~ "xterm"
+  if has("terminfo")
+    set t_Sf=<Esc>[3%p1%dm
+   set t_Sb=<Esc>[4%p1%dm
+ else
+   set t_Sf=<Esc>[3%dm
+   set t_Sb=<Esc>[4%dm
+ endif
+endif
+
 set nohlsearch
 set visualbell
 set autoindent
@@ -74,3 +90,4 @@ if findfile(s:host_specific_setup,"<sfile>:%h") != ""
   source `=expand(s:host_specific_setup)`
 endif
 unlet s:host_specific_setup
+" vi:expandtab ts=2 sw=2
