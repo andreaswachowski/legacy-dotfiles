@@ -56,7 +56,9 @@ if has("gui_running")
   set guioptions-=T " remove tool bar
 endif
 
-highlight Visual term=reverse ctermbg=White guibg=White
+" Using "ctermbg=White" will only use gray background on an iTerm with 256
+" colors, therefore using 255 instead.
+highlight Visual term=reverse ctermbg=255 guibg=White
 
 " filetype for Supermemo Databases:
 au BufRead,BufNewFile *.smd		setfiletype smd
