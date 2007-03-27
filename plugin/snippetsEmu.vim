@@ -22,27 +22,27 @@
 " globally use the 'Iabbr' command.
 "
 " Example One:
-" Snippet fori for «datum» in «data»:<CR>«datum».«»
+" Snippet fori for Â«datumÂ» in Â«dataÂ»:<CR>Â«datumÂ».Â«Â»
 "
 " The above will expand to the following (indenting may differ):
 " 
-" for «datum» in «data»:
-"   «datum».«»
+" for Â«datumÂ» in Â«dataÂ»:
+"   Â«datumÂ».Â«Â»
 " 
-" The cursor will be placed after the first '«' in insert mode.
-" Pressing <Tab> will 'tab' to the next place marker («data») in
-" insert mode.  Adding text between « and » and then hitting «Tab» will
+" The cursor will be placed after the first 'Â«' in insert mode.
+" Pressing <Tab> will 'tab' to the next place marker (Â«dataÂ») in
+" insert mode.  Adding text between Â« and Â» and then hitting Â«TabÂ» will
 " remove the angle brackets and replace all markers with a similar identifier.
 "
 " Example Two:
 " With the cursor at the pipe, hitting <Tab> will replace:
-" for «MyVariableName|datum» in «data»:
-"   «datum».«»
+" for Â«MyVariableName|datumÂ» in Â«dataÂ»:
+"   Â«datumÂ».Â«Â»
 "
 " with (the pipe shows the cursor placement):
 "
-" for MyVariableName in «data»:
-"   MyVariableName.«»
+" for MyVariableName in Â«dataÂ»:
+"   MyVariableName.Â«Â»
 " 
 " Enjoy.
 "
@@ -55,7 +55,7 @@
 " has been made) is passed in the @z register (the original contents of the
 " register are restored once the command has been run).
 "
-" Named Tags. Naming a tag (the «datum» tag in the example above) and changing
+" Named Tags. Naming a tag (the Â«datumÂ» tag in the example above) and changing
 " the value will cause all other tags with the same name to be changed to the
 " same value (as illustrated in the above example). Not changing the value and
 " hitting <Tab> will cause the tag's name to be used as the default value.
@@ -65,23 +65,23 @@
 " used in a tag name if the name is enclosed in quotes.
 "
 " Valid tags
-" «»
-" «tagName»
-" «tagName:command»
-" «"Tag Name"»
-" «"Tag Name":command»
+" Â«Â»
+" Â«tagNameÂ»
+" Â«tagName:commandÂ»
+" Â«"Tag Name"Â»
+" Â«"Tag Name":commandÂ»
 "
 " Invalid tags, random text
-" «:»
-" «:command»
-" «Tag Name»
-" «Tag Name:command»
-" «"Tag Name":»
-" «Tag »
-" «OpenTag
+" Â«:Â»
+" Â«:commandÂ»
+" Â«Tag NameÂ»
+" Â«Tag Name:commandÂ»
+" Â«"Tag Name":Â»
+" Â«Tag Â»
+" Â«OpenTag
 "
-" Here's our magic search term (assumes '«',':' and '»' as our tag delimiters:
-" «\([^[:punct:] \t]\{-}\|".\{-}"\)\(:[^»]\{-1,}\)\?»
+" Here's our magic search term (assumes 'Â«',':' and 'Â»' as our tag delimiters:
+" Â«\([^[:punct:] \t]\{-}\|".\{-}"\)\(:[^Â»]\{-1,}\)\?Â»
 " }}}
 " }}}
 
@@ -112,11 +112,11 @@ call <SID>Debug("Started the plugin")
 let loaded_snippet=1
 " {{{ Set up variables
 if !exists("g:snip_start_tag")
-    let g:snip_start_tag = "«"
+    let g:snip_start_tag = "Â«"
 endif
 
 if !exists("g:snip_end_tag")
-    let g:snip_end_tag = "»"
+    let g:snip_end_tag = "Â»"
 endif
 
 if !exists("g:snip_elem_delim")
@@ -632,8 +632,8 @@ endfunction
 " {{{ Jumper()
 " We need to rewrite this function to reflect the new behaviour. Every jump
 " will now delete the markers so we need to allow for the following conditions
-" 1. Empty tags e.g. "«»".  When we land inside then we delete the tags.
-"  "«:»" is now an invalid tag (use "«»" instead) so we don't need to check for
+" 1. Empty tags e.g. "Â«Â»".  When we land inside then we delete the tags.
+"  "Â«:Â»" is now an invalid tag (use "Â«Â»" instead) so we don't need to check for
 "  this
 " 2. Tag with variable name.  Save the variable name for the next jump.
 " 3. Tag with command. Tags no longer have default values. Everything after the

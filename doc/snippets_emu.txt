@@ -47,7 +47,7 @@ The command used to define a snippet is 'Snippet'.
 
 Basic Syntax: >
 
-	Snippet trigger_name The cursor will be placed here: «» Trailing text
+	Snippet trigger_name The cursor will be placed here: Â«Â» Trailing text
 
 In insert mode typing 'trigger_name<tab>' will remove 'trigger_name' and
 replace it with the text: 'The cursor will be placed here:  Trailing text'.
@@ -60,16 +60,16 @@ entered on a single line.
                                                                   *named-tags*
 Named tags ~
 
-Instead of the simple '«»' tags used for cursor placement a user can define
+Instead of the simple 'Â«Â»' tags used for cursor placement a user can define
 named tags. When the value of a named tag is changed then all other tags with
 that name will be changed to the same value.
 
 E.g. >
 
-    Snippet trigger My name is «forename» «surname». Call me «forename».
+    Snippet trigger My name is Â«forenameÂ» Â«surnameÂ». Call me Â«forenameÂ».
 
 In insert mode typing 'trigger<space>' will place the cursor inside the
-'«forename»' tag. Whatever is entered inside the tag will replace the other
+'Â«forenameÂ»' tag. Whatever is entered inside the tag will replace the other
 similarly named tag at the end of the line after the user presses 'Tab'.
 
 If no value is entered for a named tag then the tag's name will be used
@@ -92,11 +92,11 @@ A common example is performing substitutions.
 
 E.g. >
 
-    Snippet trigger My name is «name».  I SAID: MY NAME IS
-    «name:substitute(@z,'.','\u&','g')»!
+    Snippet trigger My name is Â«nameÂ».  I SAID: MY NAME IS
+    Â«name:substitute(@z,'.','\u&','g')Â»!
 
-The value entered in the «name» tag will be passed to the command in the
-second «name» tag in the @z register (any value already in @z will be
+The value entered in the Â«nameÂ» tag will be passed to the command in the
+second Â«nameÂ» tag in the @z register (any value already in @z will be
 preserved and restored). The substitute command will change the entered value
 to be in upper case. I.e. Entering 'trigger<space>' and typing 'Tycho<Tab>'
 will result in the following text: >
@@ -132,7 +132,7 @@ option when using filetype specific snippets. It is possible to define
 using the legacy 'Iabbr' command (note the capital 'I'). 
 
 E.g. >
-    Iabbr for for «var» in «list»:<CR>«»
+    Iabbr for for Â«varÂ» in Â«listÂ»:<CR>Â«Â»
 ~
                                                                *snip-ftplugin*
 The preferred practice for defining filetype specific snippets is to include 
@@ -160,7 +160,7 @@ SNIPPETSEMU OPTIONS                                     *snippets_emu-options*
                                                          *snip-start-end-tags*
 Start and End Tags ~
 
-By default the start and end tags are set to be '«' and '»'. These can be
+By default the start and end tags are set to be 'Â«' and 'Â»'. These can be
 changed by setting the following variables in vimrc: >
 
     g:snip_start_tag
@@ -189,15 +189,15 @@ Valid Tag Names ~
 Tag names cannot contain whitespace unless they are enclosed in quotes.
 
 Valid Examples: >
-    «validName»
-    «"valid name"»
-    «tagName:command»
-    «"Tag Name":command»
+    Â«validNameÂ»
+    Â«"valid name"Â»
+    Â«tagName:commandÂ»
+    Â«"Tag Name":commandÂ»
 
 Invalid Examples: >
-    «invalid name»
-    «Tag Name:command»
-    «:command»
+    Â«invalid nameÂ»
+    Â«Tag Name:commandÂ»
+    Â«:commandÂ»
 
 ~
                                                   *snip-advanced-tag-commands*
@@ -226,13 +226,13 @@ Example:
         if a:count == 0
             return "(,)"
         else
-            return '('.repeat('«», ', a:count).')'
+            return '('.repeat('Â«Â», ', a:count).')'
         endif
     endfunction
 
-    Snippet pf print "«s»" % «s:PyArgList(Count(@z, '%[^%]'))»<CR>«»
+    Snippet pf print "Â«sÂ»" % Â«s:PyArgList(Count(@z, '%[^%]'))Â»<CR>Â«Â»
 
-The above snippet will expand 'pf' to 'print "«s»" ...'. The user then
+The above snippet will expand 'pf' to 'print "Â«sÂ»" ...'. The user then
 enters a format string. Once the string is entered the Count and PyArgList
 functions are used to generate a number of empty tags.
 
