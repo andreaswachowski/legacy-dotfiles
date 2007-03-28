@@ -232,6 +232,7 @@ dbext-tutorial	dbext.txt	/*dbext-tutorial*
 dbext.txt	dbext.txt	/*dbext.txt*
 dbext.vim	dbext.txt	/*dbext.vim*
 fetch	pi_netrw.txt	/*fetch*
+ft-ruby-omni	ft-ruby-omni.txt	/*ft-ruby-omni*
 ftp	pi_netrw.txt	/*ftp*
 g%	matchit.txt	/*g%*
 g:NetrwTopLvlMenu	pi_netrw.txt	/*g:NetrwTopLvlMenu*
@@ -623,6 +624,8 @@ rails-tabs	rails.txt	/*rails-tabs*
 rails.txt	rails.txt	/*rails.txt*
 rcp	pi_netrw.txt	/*rcp*
 rsync	pi_netrw.txt	/*rsync*
+ruby-syntax	ft-ruby-syntax.txt	/*ruby-syntax*
+ruby.vim	ft-ruby-syntax.txt	/*ruby.vim*
 scp	pi_netrw.txt	/*scp*
 sftp	pi_netrw.txt	/*sftp*
 snip-advanced-tag-commands	snippets_emu.txt	/*snip-advanced-tag-commands*
