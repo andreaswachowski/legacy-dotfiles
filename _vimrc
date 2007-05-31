@@ -5,13 +5,15 @@ if findfile(s:host_specific_pre_setup,"<sfile>:%h") != ""
 endif
 unlet s:host_specific_pre_setup
 
-if &term =~ "dtterm"
-  set t_Co=256
+"if &term =~ "dtterm" 
+" set t_Co=256
+if  &term =~ "rxvt-unicode"
+  set t_Co=88
 elseif &term =~ "xterm"
   set t_Co=8
 endif
 
-if &term =~ "dtterm" || &term =~ "xterm"
+if &term =~ "dtterm" || &term =~ "xterm"|| &term =~ "rxvt-unicode"
   if has("terminfo")
     set t_Sf=<Esc>[3%p1%dm
    set t_Sb=<Esc>[4%p1%dm
@@ -50,6 +52,9 @@ if &t_Co > 2 || has("gui_running")
 endif
 if &t_Co >= 256 || has("gui_running")
   colorscheme default256
+elseif &t_Co >= 88
+  colorscheme desert256
+"  colorscheme inkpot
 endif
 if has("gui_running")
   set guioptions-=m " remove menu bar
