@@ -41,6 +41,7 @@
 :RmVimball	pi_vimball.txt	/*:RmVimball*
 :SVNInfo	vcscommand.txt	/*:SVNInfo*
 :Sexplore	pi_netrw.txt	/*:Sexplore*
+:Snippet	snippets_emu.txt	/*:Snippet*
 :Texplore	pi_netrw.txt	/*:Texplore*
 :TlistAddFiles	taglist.txt	/*:TlistAddFiles*
 :TlistAddFilesRecursive	taglist.txt	/*:TlistAddFilesRecursive*
@@ -637,6 +638,7 @@ snip-elem-delimiter	snippets_emu.txt	/*snip-elem-delimiter*
 snip-ftplugin	snippets_emu.txt	/*snip-ftplugin*
 snip-limitations	snippets_emu.txt	/*snip-limitations*
 snip-menu	snippets_emu.txt	/*snip-menu*
+snip-remap-key	snippets_emu.txt	/*snip-remap-key*
 snip-snippet-commands	snippets_emu.txt	/*snip-snippet-commands*
 snip-special-vars	snippets_emu.txt	/*snip-special-vars*
 snip-start-end-tags	snippets_emu.txt	/*snip-start-end-tags*
