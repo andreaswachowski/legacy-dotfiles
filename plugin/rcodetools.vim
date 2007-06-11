@@ -105,8 +105,7 @@ endfunction
 
 function! RCT_find_tag_or_ri(fullname)
     " rubikitch: modified for rtags-compatible tags
-"    let tagname = '::' . a:fullname
-    let tagname = a:fullname
+    let tagname = '::' . a:fullname
     let tagresults = taglist(tagname)
     if len(tagresults) != 0
 	execute "tjump " . tagname
