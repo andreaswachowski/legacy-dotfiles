@@ -611,7 +611,7 @@ function! s:BufCommands()
   command! -buffer -bar -nargs=? -bang -complete=custom,s:PreviewComplete Rpreview :call s:Preview(<bang>0,<q-args>)
   command! -buffer -bar -nargs=? -bang -complete=custom,s:environments    Rlog     :call s:Log(<bang>0,<q-args>)
   command! -buffer -bar -nargs=* -bang -complete=custom,s:SetComplete     Rset     :call s:Set(<bang>0,<f-args>)
-  command! -buffer -bar -nargs=0 Rtags       :call s:Tags(<bang>0)
+  command! -buffer -bar -nargs=0 Rtags       :call s:TagsWithoutRails(<bang>0)
   command! -buffer -bar -nargs=0 -bang Rdoc  :if <bang>0 | call s:prephelp() | help rails | else | call s:Doc(<bang>0) | endif
   if exists(":Project")
     command! -buffer -bar -nargs=? -bang  Rproject :call s:Project(<bang>0,<q-args>)
@@ -724,6 +724,23 @@ function! s:Tags(bang)
     return s:error("ctags not found")
   endif
   exe "!".cmd." -R ".s:ra()
+endfunction
+
+function! s:TagsWithoutRails(bang)
+  if exists("g:Tlist_Ctags_Cmd")
+    let cmd = g:Tlist_Ctags_Cmd
+  elseif executable("exuberant-ctags")
+    let cmd = "exuberant-ctags"
+  elseif executable("ctags-exuberant")
+    let cmd = "ctags-exuberant"
+  elseif executable("ctags")
+    let cmd = "ctags"
+  elseif executable("ctags.exe")
+    let cmd = "ctags.exe"
+  else
+    return s:error("ctags not found")
+  endif
+  exe "!".cmd." -R `find ".s:ra()." -name '*.rb' -a \! -path 'vendor/rails'`"
 endfunction
 
 " }}}1
