@@ -105,7 +105,8 @@ endfunction
 
 function! RCT_find_tag_or_ri(fullname)
     " rubikitch: modified for rtags-compatible tags
-    let tagname = '::' . a:fullname
+"    let tagname = '::' . a:fullname
+    let tagname = a:fullname
     let tagresults = taglist(tagname)
     if len(tagresults) != 0
 	execute "tjump " . tagname
@@ -113,6 +114,11 @@ function! RCT_find_tag_or_ri(fullname)
         call <SID>RCT_new_ri_window()
         call <SID>RCT_execute_ri(a:fullname)
     endif
+endfunction
+
+function! <SID>RCT_smart_ri_working(fullname)
+  call <SID>RCT_new_ri_window()
+  call <SID>RCT_execute_ri(a:fullname)
 endfunction
 
 function! <SID>RCT_smart_ri()
@@ -134,5 +140,5 @@ execute "au Filetype ruby setlocal completefunc=" . s:sid . "RCT_completion"
 execute 'au Filetype ruby nmap <buffer><silent> <C-]> :exec "call ' .
          \ 'RCT_find_tag_or_ri(''" . expand("<cword>") . "'')"<cr>'
 execute 'au Filetype ruby nmap <buffer><silent>' . s:GetOption("RCT_ri_binding", "<LocalLeader>r") . 
-        \ ' :call ' .  s:sid . 'RCT_smart_ri()<cr>'
+        \ ' :exec "call ' .  s:sid . 'RCT_smart_ri_working(''" . expand("<cword>") . "'')"<cr>'
 let &cpo = s:save_cpo
